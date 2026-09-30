@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "learner": { "goal": "", "background": "", "weekly_time_budget": "", "started": "2026-09-30" },
+  "topic": "Medicina 1º período: Fisiologia, Anatomia, Histologia e Exames de Imagem",
+  "current_stage": "00-diagnostico",
+  "stats": { "sessions": 0, "study_minutes": 0, "concepts_mastered": 0, "flashcards_total": 0,
+             "flashcards_due": 0, "exercises_solved": 0, "quizzes_taken": 0, "feynman_attempts": 0,
+             "streak_days": 0, "last_session_date": "2026-09-30" },
+  "review_tracking": { "last_review_date": null, "last_review_accuracy": null,
+                       "cards_consolidated": 0, "consolidation_ratio": 0.0 },
+  "stages": []
+}
