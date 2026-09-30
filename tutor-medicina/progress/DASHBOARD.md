@@ -1,3 +1,3 @@
 # Dashboard
-Etapa atual: 00-diagnostico (onboarding em andamento)
-[░░░░░░░░░░░░░░░░░░░░] 0%
+Etapa atual: 01 — Prova P1
+[░░░░░░░░░░░░░░░░░░░░] 0% (0/10 temas)

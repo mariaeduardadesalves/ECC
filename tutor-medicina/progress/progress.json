@@ -1,12 +1,95 @@
 {
   "schema_version": 1,
-  "learner": { "goal": "Reter o conteúdo para as provas sem esquecer rápido e construir base forte no ciclo básico para os períodos seguintes", "background": "Viu: planos e eixos anatômicos, tecidos conjuntivo e muscular, sistema genital feminino e masculino, embriologia (fecundação à 8ª semana), diretrizes do aluno/médico, bioética, exames de imagem, história da medicina/SUS. Fisiologia não citada. PROVA NA SEMANA QUE VEM (declarado 2026-09-30).", "weekly_time_budget": "1 hora por dia (~7h/semana)", "started": "2026-09-30" },
+  "learner": {
+    "goal": "Reter o conteúdo para as provas sem esquecer rápido e construir base forte no ciclo básico para os períodos seguintes",
+    "background": "Viu: planos e eixos anatômicos, tecidos conjuntivo e muscular, sistema genital feminino e masculino, embriologia (fecundação à 8ª semana), diretrizes do aluno/médico, bioética, exames de imagem, história da medicina/SUS. Fisiologia não citada. PROVA NA SEMANA QUE VEM (declarado 2026-09-30).",
+    "weekly_time_budget": "1 hora por dia (~7h/semana)",
+    "started": "2026-09-30"
+  },
   "topic": "Medicina 1º período: Fisiologia, Anatomia, Histologia e Exames de Imagem",
-  "current_stage": "00-diagnostico",
-  "stats": { "sessions": 0, "study_minutes": 0, "concepts_mastered": 0, "flashcards_total": 0,
-             "flashcards_due": 0, "exercises_solved": 0, "quizzes_taken": 0, "feynman_attempts": 0,
-             "streak_days": 0, "last_session_date": "2026-09-30" },
-  "review_tracking": { "last_review_date": null, "last_review_accuracy": null,
-                       "cards_consolidated": 0, "consolidation_ratio": 0.0 },
-  "stages": []
+  "current_stage": "01-prova-p1",
+  "stats": {
+    "sessions": 0,
+    "study_minutes": 0,
+    "concepts_mastered": 0,
+    "flashcards_total": 0,
+    "flashcards_due": 0,
+    "exercises_solved": 0,
+    "quizzes_taken": 0,
+    "feynman_attempts": 0,
+    "streak_days": 0,
+    "last_session_date": "2026-09-30"
+  },
+  "review_tracking": {
+    "last_review_date": null,
+    "last_review_accuracy": null,
+    "cards_consolidated": 0,
+    "consolidation_ratio": 0.0
+  },
+  "stages": [
+    {
+      "id": "01-prova-p1",
+      "title": "Prova P1",
+      "status": "in_progress",
+      "mastery": 0.0,
+      "topics_total": 10,
+      "topics_done": 0
+    },
+    {
+      "id": "02-anatomia-locomotor",
+      "title": "Anatomia geral e locomotor",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "03-histologia-basica",
+      "title": "Histologia básica",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "04-fisiologia-celular",
+      "title": "Fisiologia: base celular",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "05-fisiologia-nervo-musculo",
+      "title": "Fisiologia: nervo e músculo",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "06-embriologia-3sem-fetal",
+      "title": "Embriologia: 3ª sem. ao fim",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "07-imagem",
+      "title": "Exames de imagem",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    },
+    {
+      "id": "08-integracao",
+      "title": "Integração",
+      "status": "not_started",
+      "mastery": 0.0,
+      "topics_total": 0,
+      "topics_done": 0
+    }
+  ]
 }
