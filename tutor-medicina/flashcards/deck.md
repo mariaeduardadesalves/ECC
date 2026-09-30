@@ -6,3 +6,5 @@
 | C004 | Mastócito: o que guarda e quando libera? | Grânulos com histamina e heparina; liberados em alergia e inflamação (coceira, vermelhidão). | conjuntivo-celulas | 01-prova-p1 | 2026-09-30 | 2026-10-01 | 0 | 2.3 | 0 | 0 |
 | C005 | Qual célula do conjuntivo produz anticorpos? Vem de qual célula? | Plasmócito, derivado do linfócito B. | conjuntivo-celulas | 01-prova-p1 | 2026-09-30 | 2026-10-01 | 0 | 2.3 | 0 | 0 |
 | C006 | Fecundação até 8ª semana: qual período? E a partir da 9ª? | Embrionário (fecundação–8ª semana); fetal a partir da 9ª semana. | embriologia | 01-prova-p1 | 2026-09-30 | 2026-10-01 | 0 | 2.3 | 0 | 0 |
+| C007 | Discos intercalares: onde estão e qual a função? | Músculo cardíaco; unem as células (desmossomos) e conectam eletricamente (junções comunicantes), garantindo contração sincronizada. | muscular | 01-prova-p1 | 2026-09-30 | 2026-10-01 | 0 | 2.3 | 0 | 0 |
+| C008 | Na contração do músculo esquelético, o que ocorre com banda A, banda I e zona H? | Filamentos deslizam sem encurtar; banda A mantém o comprimento (é o da miosina); banda I e zona H diminuem. | muscular | 01-prova-p1 | 2026-09-30 | 2026-10-01 | 0 | 2.3 | 0 | 0 |
