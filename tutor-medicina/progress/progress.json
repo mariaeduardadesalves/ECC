@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "learner": { "goal": "", "background": "", "weekly_time_budget": "", "started": "2026-09-30" },
+  "learner": { "goal": "Reter o conteúdo para as provas sem esquecer rápido e construir base forte no ciclo básico para os períodos seguintes", "background": "", "weekly_time_budget": "", "started": "2026-09-30" },
   "topic": "Medicina 1º período: Fisiologia, Anatomia, Histologia e Exames de Imagem",
   "current_stage": "00-diagnostico",
   "stats": { "sessions": 0, "study_minutes": 0, "concepts_mastered": 0, "flashcards_total": 0,
