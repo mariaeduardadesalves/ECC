@@ -73,5 +73,11 @@ Recebidos em seguida: TBL SP 2.1, 2.2, 2.3 e Tutoria casos 1 e 2 (DCN/metodologi
 - [ ] Linha do tempo (Imhotep, Hamurabi, Hipócrates, Galeno, Vesalius, Harvey, Jenner, Crawford Long, Fleming, DNA 1953); religião x medicina; iatrogenia; DSS
 - ATENÇÃO: o material atribui o microscópio acromático do séc. XIX a Leeuwenhoek; Leeuwenhoek é do séc. XVII (microscópios simples). Conferir com o professor/livro.
 
+## Notas de tutoria recebidas (resumos da aluna; parecem gerados por IA, conferir nos livros)
+- SP 1.3 (SUS): princípios doutrinários (universalidade, equidade, integralidade) x organizativos; princípio x diretriz; determinantes sociais (modelo de Dahlgren e Whitehead, camadas)
+- SP 1.4 (Bioética): moral x ética x bioética; 3 funções da bioética; principialismo (autonomia, beneficência, não maleficência, justiça); CEM x CEEM; sigilo e exceções (motivo justo, dever legal, autorização escrita); limites da autonomia; menores de idade; inovações tecnológicas
+- SP 2.1 (Reprodutor masculino): criptorquidia (temperatura, espermatogênese x Leydig), varicocele/plexo pampiniforme, puberdade masculina e Tanner, eixo HHG (LH-Leydig, FSH-Sertoli, feedback), etapas da espermatogênese, fertilidade e espermograma
+- Slides "Ovário e oogênese" e "Reprodutor masculino": repetem os roteiros CFSH 1 e 2 (folículos pré-antrais/antrais, teca/granulosa, caso de Ana; trajeto do espermatozoide, espermograma, glândulas)
+
 ## Plano (ajustar à data da prova, ainda não informada)
-Prioridade: (1) morfofuncional dos roteiros (reprodutor, embriologia, osso/cartilagem, músculo, planos); (2) hormonal (HHG, ciclo, puberdade, contracepção); (3) tutorias/TBLs de ética, DCN e história (memorização com cartões e respostas abertas modelo).
+Prioridade: (1) morfofuncional (reprodutor, embriologia, osso/cartilagem, músculo, planos); (2) hormonal (HHG, ciclo, puberdade, contracepção); (3) ética/bioética, DCN, SUS, história (memorização com cartões e respostas abertas modelo).
