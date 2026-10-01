@@ -95,9 +95,9 @@ Recebidos em seguida: TBL SP 2.1, 2.2, 2.3 e Tutoria casos 1 e 2 (DCN/metodologi
 - Tutoria SP 4 "Análise e formação embrionária" (quadros): termos: biometria compatível com a idade gestacional, translucência nucal, gastrosquise, período periconcepcional, dobramento embrionário, agentes teratogênicos, USG morfológica. Objetivos: (1) desenvolvimento da 3ª à 8ª semana (gastrulação, neurulação, organogênese); (2) fatores de má-formação (quais, como, quando, onde, por quê); (3) qual exame/imagem é mais apropriado em cada fase; (4) suplementação na gestação (ácido fólico: quais, onde, como, por quê; relação com a neurulação/tubo neural); (5) base molecular das mutações (alteração no DNA → muda a proteína → muda a função). Perguntas da turma: fase em que se forma a boca, criticidade da neurulação, anemia falciforme (o quê, como, por quê), fatores exógenos e genéticos
 - ATENÇÃO: o quadro cita "protostômio" para a boca; o ser humano é deuterostômio (a boca se forma depois, a partir do estomodeu, junto à membrana bucofaríngea). Conferir no Moore/Sadler.
 
-## Plano final (prova em 06/10/2026; sessões de 01/10 a 05/10; 10 min de cartões + 40-50 min novo + recuperação ativa)
-- Dia 1 (qui 01/10): 8 cartões + masculino completo (espermatogênese, eixo HHG, Tanner, criptorquidia/varicocele, espermograma) + feminino anatomia
-- Dia 2 (sex 02/10): ovário/folículos/ovogênese + ciclo menstrual e hormônios (SOP, aromatase, puberdade feminina) + β-HCG, contracepção
-- Dia 3 (sáb 03/10): embriologia (1ª–2ª sem., fecundação, idade gestacional; 3ª–8ª sem., folhetos, teratógenos, ácido fólico, USG 1º tri) + genética (herança, mutação, falciforme)
-- Dia 4 (dom 04/10): osso, cartilagem, articulações, músculo macro, planos/eixos/movimentos, imagem (RX, TC/UH, USG, RM, mamografia), biossegurança
-- Dia 5 (seg 05/10): bioética, DCN, SUS/DSS, modelos de saúde e história + simulado 40+8 + pontos fracos
+## Plano final (prova 06/10/2026; disponibilidade: 4 h nos dias úteis, 8 h sáb/dom; pausas de 10 min a cada ~50 min)
+- Qui 01/10 (4h): cartões (15 min) · masculino completo (1h30: espermatogênese, HHG, Tanner, criptorquidia, varicocele, espermograma, USG) · feminino anatomia + ovário/folículos/ovogênese (1h30) · recuperação ativa + resposta aberta (45 min)
+- Sex 02/10 (4h): cartões · ciclo menstrual e hormônios, SOP, aromatase, puberdade feminina, USG pélvica (1h30) · β-HCG, contracepção, FIV, infertilidade x esterilidade (1h) · embriologia 1ª–2ª semana (1h15) · recuperação ativa
+- Sáb 03/10 (8h): cartões · embriologia 3ª–8ª, teratógenos, ácido fólico, USG morfológica (2h) · genética (1h30) · osso e cartilagem (2h) · articulações (1h) · recuperação + mini-simulado (1h)
+- Dom 04/10 (8h): cartões · músculo macro e micro (1h30) · planos/eixos/movimentos (1h) · imagem RX/TC/USG/RM/mamografia (1h30) · biossegurança e microscópio (30 min) · bioética (1h30) · DCN, SUS, DSS, modelos de saúde e história (1h30) · recuperação
+- Seg 05/10 (4h): simulado completo 40+8 (1h30) · correção (1h) · pontos fracos e cartões (1h) · dormir cedo
