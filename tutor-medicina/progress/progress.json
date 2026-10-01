@@ -9,16 +9,16 @@
   "topic": "Medicina 1º período: Fisiologia, Anatomia, Histologia e Exames de Imagem",
   "current_stage": "01-prova-p1",
   "stats": {
-    "sessions": 1,
-    "study_minutes": 75,
+    "sessions": 2,
+    "study_minutes": 110,
     "concepts_mastered": 0,
-    "flashcards_total": 8,
+    "flashcards_total": 11,
     "flashcards_due": 0,
-    "exercises_solved": 3,
+    "exercises_solved": 5,
     "quizzes_taken": 0,
     "feynman_attempts": 0,
-    "streak_days": 0,
-    "last_session_date": "2026-09-30"
+    "streak_days": 2,
+    "last_session_date": "2026-10-01"
   },
   "review_tracking": {
     "last_review_date": null,
