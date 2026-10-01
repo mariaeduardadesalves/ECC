@@ -79,5 +79,12 @@ Recebidos em seguida: TBL SP 2.1, 2.2, 2.3 e Tutoria casos 1 e 2 (DCN/metodologi
 - SP 2.1 (Reprodutor masculino): criptorquidia (temperatura, espermatogênese x Leydig), varicocele/plexo pampiniforme, puberdade masculina e Tanner, eixo HHG (LH-Leydig, FSH-Sertoli, feedback), etapas da espermatogênese, fertilidade e espermograma
 - Slides "Ovário e oogênese" e "Reprodutor masculino": repetem os roteiros CFSH 1 e 2 (folículos pré-antrais/antrais, teca/granulosa, caso de Ana; trajeto do espermatozoide, espermograma, glândulas)
 
+## Slides e PDFs adicionais (recebidos em seguida)
+- SP 1.1 (slides só com imagens): exemplos de imagem (TC de crânio com área hiperdensa; USG transvaginal com embrião, CCN 33,5 mm = 10 semanas)
+- SP 1.2 (imagem): radiopaco (branco: osso, metal, cálculo) x radiolucente (preto: ar, gás); TC com unidades Hounsfield (ar -1000, gordura ~-100, água 0, músculo 45-50, sangramento agudo 60-90, osso esponjoso 300-800, cortical >1000, metal >3000); hiperdenso x hipodenso
+- SP 2.4 (USG 1º trimestre): 11s3d a 13s6d, CCN 45-84 mm, translucência nucal (acima do P99, ~3,5 mm, é anormal), osso nasal, ducto venoso, valva tricúspide; rastreio de cromossomopatias e malformações e risco de pré-eclâmpsia
+- Genética: herança monogênica (leis de Mendel; autossômica dominante, recessiva; ligada ao X dominante e recessiva; influenciada pelo sexo), heredograma, acondroplasia (AA letal), fibrose cística, hemofilia A, daltonismo, consanguinidade; aconselhamento genético e anemia falciforme (GAG>GTG, HbS, traço AS, AS x AS = 25% SS)
+- Placenta e anexos (2.6): o que são anexos embrionários; por que a placenta nem sempre é considerada anexo; como sustentam o desenvolvimento (slides com poucas informações em texto)
+
 ## Plano (ajustar à data da prova, ainda não informada)
 Prioridade: (1) morfofuncional (reprodutor, embriologia, osso/cartilagem, músculo, planos); (2) hormonal (HHG, ciclo, puberdade, contracepção); (3) ética/bioética, DCN, SUS, história (memorização com cartões e respostas abertas modelo).
