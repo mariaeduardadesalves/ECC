@@ -1,7 +1,8 @@
 # Etapa 01 — Prova P1 (mapa pelos roteiros da FACAPE enviados em 2026-10-01)
 
 Formato: 40 fechadas + 8 abertas. Roteiros recebidos: SP 1.1, 1.3, 1.4, CFSH 1 (masculino), CFSH 2 (feminino).
-NÃO recebidos (citados pela aluna): embriologia (fecundação–8ª sem.), bioética, diretrizes do aluno/médico, história da medicina/SUS.
+Recebidos depois: CFSH 3 e 4 (embriologia, genética), TBL SP 1.1 (DCN), 1.3 (articulações), 1.4 (relação médico-paciente, documentos, publicidade).
+Sem material até agora: história da medicina/SUS.
 
 ## SP 1.1 — Terminologia, planos/eixos, biossegurança, imagem
 - [ ] Posição anatômica; termos direcionais (cranial/caudal, medial/lateral, proximal/distal)
@@ -38,6 +39,30 @@ NÃO recebidos (citados pela aluna): embriologia (fecundação–8ª sem.), bio�
 - [ ] Ovogênese (pausas da meiose)
 - [ ] Ciclo menstrual: FSH, LH, estrogênio, progesterona por fase; ovulação; USG pélvica; SOP
 
-## Plano revisado (7 dias; ajustar à data da prova)
-1. Cartões + masculino (complementos) · 2. Feminino anatomia/ovário/ovogênese · 3. Ciclo menstrual/hormônios + USG
-4. Osso e cartilagem · 5. Músculo macro + planos/eixos/movimentos · 6. Biossegurança, microscópio, imagem + temas sem roteiro · 7. Simulado + abertas
+## CFSH 3 — Embriologia: 1ª e 2ª semanas
+- [ ] Gametas: partes do espermatozoide (cabeça, acrossomo, peça intermediária, cauda) e do ovócito (zona pelúcida, corona radiata, corpo polar); viabilidade dos gametas
+- [ ] Fecundação: capacitação → reação acrossômica → penetração da zona pelúcida → fusão; bloqueio da polispermia; local = tuba uterina (ampola)
+- [ ] 1ª semana: zigoto → clivagem → mórula → blastocisto (embrioblasto/trofoblasto); perda da zona pelúcida; implantação no endométrio (fase secretora)
+- [ ] 2ª semana: citotrofoblasto/sinciciotrofoblasto, epiblasto/hipoblasto (disco bilaminar), cavidade amniótica, saco vitelínico, cavidade coriônica, pedículo de conexão
+- [ ] Mitose (fases), clivagem (células aumentam em número, embrião não cresce), totipotente x pluripotente x multipotente, FIV e gemelaridade, USG da gestação inicial
+
+## CFSH 4 — Embriologia: 3ª a 8ª semana + genética
+- [ ] Gastrulação (linha primitiva, 3 folhetos), notocorda, neurulação
+- [ ] Derivados dos folhetos: ectoderma, endoderma, mesoderma (paraxial, intermediário, lateral)
+- [ ] Dobramento do embrião; eventos das semanas 3, 4 e 5–8; período crítico e teratógenos
+- [ ] USG do 1º trimestre (11–14 sem., translucência nucal)
+- [ ] DNA, transcrição, tradução, tipos de mutação (silenciosa, missense, nonsense), anemia falciforme (troca de um aminoácido)
+
+## TBLs
+- [ ] SP 1.1: DCN do curso de Medicina (perfil do egresso, competências, integração ensino-serviço-comunidade)
+- [ ] SP 1.3: Articulações (tipos, sinoviais: cartilagem articular, cápsula, membrana e líquido sinovial, ligamentos; nutrição e lubrificação da cartilagem)
+- [ ] SP 1.4: Código de Ética Médica (Res. CFM 2.217/2018): relação com pacientes (autonomia, sigilo), documentos médicos, publicidade (Res. CFM 2.336/2023), "estar médico"
+
+## Plano revisado (ajustar quando soubermos a data da prova)
+1. Cartões + masculino completo + feminino anatomia
+2. Ovário, folículos, ovogênese + ciclo menstrual/hormônios
+3. Embriologia 1ª–2ª semana
+4. Embriologia 3ª–8ª + genética molecular
+5. Osso, cartilagem, articulações
+6. Músculo macro, planos/eixos/movimentos, biossegurança, imagem
+7. Ética/DCN/documentos/publicidade + história/SUS + simulado
