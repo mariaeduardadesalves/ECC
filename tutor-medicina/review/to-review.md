@@ -3,3 +3,5 @@
 - 2026-09-30 | Terminologia: fibra reticular (colágeno III) ≠ elástica; sarcômero: banda A/I são faixas, não filamentos | aberto
 - 2026-09-30 | Respostas abertas: organizar em componentes → função → exemplos; evitar termos genéricos (endocitose → fagocitose) | aberto
 - 2026-09-30 | Sarcômero: A constante, I e H diminuem (errou 2x, acertou com visual) | rever em 2026-10-01
+- 2026-10-01 | Glicoproteína adesiva (cola) x proteoglicano (água/gel) errou 2x | rever 10-02
+- 2026-10-01 | Histamina = vasodilatação (aluna disse 'ou vasoconstrição') | rever

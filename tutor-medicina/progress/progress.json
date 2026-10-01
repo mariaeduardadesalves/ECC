@@ -13,7 +13,7 @@
     "study_minutes": 110,
     "concepts_mastered": 0,
     "flashcards_total": 11,
-    "flashcards_due": 0,
+    "flashcards_due": 10,
     "exercises_solved": 5,
     "quizzes_taken": 0,
     "feynman_attempts": 0,
@@ -21,8 +21,8 @@
     "last_session_date": "2026-10-01"
   },
   "review_tracking": {
-    "last_review_date": null,
-    "last_review_accuracy": null,
+    "last_review_date": "2026-10-01",
+    "last_review_accuracy": 0.875,
     "cards_consolidated": 0,
     "consolidation_ratio": 0.0
   },

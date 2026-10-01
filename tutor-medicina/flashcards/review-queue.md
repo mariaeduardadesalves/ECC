@@ -1,3 +1,3 @@
 # Fila de revisão
-Pendentes (adiados pela aluna): C001–C008 (due 2026-10-01)
-Due 2026-10-02: C009–C011
+Due 2026-10-02: C001–C005, C007–C008, C009–C011
+Due 2026-10-05: C006
