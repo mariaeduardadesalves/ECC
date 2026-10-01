@@ -2,7 +2,7 @@
 
 Formato: 40 fechadas + 8 abertas. Roteiros recebidos: SP 1.1, 1.3, 1.4, CFSH 1 (masculino), CFSH 2 (feminino).
 Recebidos depois: CFSH 3 e 4 (embriologia, genética), TBL SP 1.1 (DCN), 1.3 (articulações), 1.4 (relação médico-paciente, documentos, publicidade).
-Sem material até agora: história da medicina/SUS.
+Recebidos em seguida: TBL SP 2.1, 2.2, 2.3 e Tutoria casos 1 e 2 (DCN/metodologias ativas; história da medicina e modelos de saúde-doença).
 
 ## SP 1.1 — Terminologia, planos/eixos, biossegurança, imagem
 - [ ] Posição anatômica; termos direcionais (cranial/caudal, medial/lateral, proximal/distal)
@@ -58,11 +58,20 @@ Sem material até agora: história da medicina/SUS.
 - [ ] SP 1.3: Articulações (tipos, sinoviais: cartilagem articular, cápsula, membrana e líquido sinovial, ligamentos; nutrição e lubrificação da cartilagem)
 - [ ] SP 1.4: Código de Ética Médica (Res. CFM 2.217/2018): relação com pacientes (autonomia, sigilo), documentos médicos, publicidade (Res. CFM 2.336/2023), "estar médico"
 
-## Plano revisado (ajustar quando soubermos a data da prova)
-1. Cartões + masculino completo + feminino anatomia
-2. Ovário, folículos, ovogênese + ciclo menstrual/hormônios
-3. Embriologia 1ª–2ª semana
-4. Embriologia 3ª–8ª + genética molecular
-5. Osso, cartilagem, articulações
-6. Músculo macro, planos/eixos/movimentos, biossegurança, imagem
-7. Ética/DCN/documentos/publicidade + história/SUS + simulado
+## TBLs de Concepção e Formação (SP 2.1, 2.2, 2.3)
+- [ ] SP 2.1: feedback negativo no eixo hipotálamo-hipófise-gonadal (GnRH pulsátil, LH, FSH, testosterona, inibina)
+- [ ] SP 2.2: puberdade (ativação do eixo HHG), caracteres sexuais secundários, estirão, escala de Tanner, irregularidade menstrual nos primeiros anos
+- [ ] SP 2.3: métodos contraceptivos (hormonais, barreira, outros) e em qual etapa interferem (ovulação, capacitação, fecundação, implantação)
+
+## Tutoria caso 1 — DCN e metodologias ativas
+- [ ] DCN 2001 (perfil: generalista, humanista, crítico, reflexivo), 2014 (SUS, APS, urgência/emergência, 3 eixos), 2025 (27 competências, tecnologia-sustentabilidade-saúde mental, avaliação programática, internato)
+- [ ] Modelo flexneriano x metodologias ativas (PBL, TBL, roteiro), soft skills, raciocínio clínico, PPP prescrito x real
+
+## Tutoria caso 2 — História da medicina e modelos de saúde-doença
+- [ ] Modelos: mágico-religioso, biomédico/flexneriano (1910), processual (Leavell & Clark 1953), biopsicossocial (Engel 1977), centrado na pessoa (MCCP, 4 componentes)
+- [ ] Leavell & Clark: período pré-patogênico (agente-hospedeiro-meio) x patogênico; prevenção primária (promoção + proteção específica), secundária, terciária; prevenção primordial e quaternária
+- [ ] Linha do tempo (Imhotep, Hamurabi, Hipócrates, Galeno, Vesalius, Harvey, Jenner, Crawford Long, Fleming, DNA 1953); religião x medicina; iatrogenia; DSS
+- ATENÇÃO: o material atribui o microscópio acromático do séc. XIX a Leeuwenhoek; Leeuwenhoek é do séc. XVII (microscópios simples). Conferir com o professor/livro.
+
+## Plano (ajustar à data da prova, ainda não informada)
+Prioridade: (1) morfofuncional dos roteiros (reprodutor, embriologia, osso/cartilagem, músculo, planos); (2) hormonal (HHG, ciclo, puberdade, contracepção); (3) tutorias/TBLs de ética, DCN e história (memorização com cartões e respostas abertas modelo).
