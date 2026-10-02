@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ciclo menstrual interativo</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:820px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+label{margin-right:14px;cursor:pointer;white-space:nowrap} .box{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+small{color:var(--mut)} #info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:10px} td,th{border:1px solid var(--bd);padding:4px 6px;text-align:center}
+</style></head><body>
+<h1>Ciclo menstrual: hormônios, ovário e útero</h1>
+<p>Escolha quais hormônios mostrar e <b>arraste o controle de dia</b> para ver o que está alto ou baixo.</p>
+<div class="box" id="chk"></div>
+<svg id="s" viewBox="0 0 760 360" role="img" aria-label="Gráfico esquemático dos hormônios do ciclo menstrual"></svg>
+<input id="d" type="range" min="1" max="28" value="14" style="width:100%" aria-label="Dia do ciclo">
+<div id="info"></div>
+<table><tr><th>Fase</th><th>FSH</th><th>LH</th><th>Estrogênio</th><th>Progesterona</th></tr>
+<tr><td>Folicular</td><td>↑ no início, depois ↓</td><td>baixo</td><td>↑ progressivo</td><td>baixa</td></tr>
+<tr><td>Ovulação</td><td>pico menor</td><td><b>PICO</b></td><td>pico <i>antes</i></td><td>começa a subir</td></tr>
+<tr><td>Lútea</td><td>baixo</td><td>baixo</td><td>moderado (2º pico)</td><td><b>ALTA</b></td></tr></table>
+<p><small>Esquema didático: as curvas mostram a tendência, não são valores reais de exame.</small></p>
+<script>
+const days=[0,2,4,6,8,10,12,13,14,15,16,18,20,22,24,26,28];
+const H={
+ FSH:{c:'#2471a3',v:[.30,.45,.50,.42,.32,.24,.22,.30,.55,.30,.18,.14,.12,.12,.10,.15,.30]},
+ LH:{c:'#d68910',v:[.12,.12,.13,.13,.14,.15,.18,.45,1.0,.40,.20,.15,.15,.14,.12,.12,.12]},
+ 'Estrogênio':{c:'#c0392b',v:[.12,.12,.15,.22,.35,.50,.72,.85,.80,.45,.35,.45,.55,.50,.35,.15,.12]},
+ Progesterona:{c:'#1e8449',v:[.04,.04,.04,.04,.04,.05,.06,.08,.12,.25,.45,.8,1.0,.95,.70,.25,.05]}};
+const X=d=>50+d/28*680, Y=v=>270-v*220, on={FSH:1,LH:1,'Estrogênio':1,Progesterona:1};
+function path(v){let p=days.map((d,i)=>[X(d),Y(v[i])]),s='M'+p[0];
+ for(let i=0;i<p.length-1;i++){const a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;
+ s+=` C${b[0]+(c[0]-a[0])/6},${b[1]+(c[1]-a[1])/6} ${c[0]-(e[0]-b[0])/6},${c[1]-(e[1]-b[1])/6} ${c[0]},${c[1]}`}return s}
+function info(d){let f=d<14?'Fase folicular (ovário) · '+(d<=5?'menstrual':'proliferativa')+' (útero)':d==14?'Ovulação (~dia 14)':'Fase lútea (ovário) · secretora (útero)';
+ let t={ 'folicular':'FSH recruta folículos → granulosa produz estrogênio → endométrio prolifera.','ov':'Estrogênio alto por alguns dias gera feedback POSITIVO → pico de LH → ovulação em ~1 dia.','lutea':'Corpo lúteo produz progesterona (e estrogênio) → endométrio secretor; sem gravidez, o corpo lúteo regride e vem a menstruação.'};
+ return `<b>Dia ${d}:</b> ${f}<br>`+(d<14?t.folicular:d==14?t.ov:t.lutea)}
+function draw(){const d=+document.getElementById('d').value;let o='';
+ o+=`<rect x="${X(0)}" y="20" width="${X(14)-X(0)}" height="14" fill="#f5cba7"/><rect x="${X(14)}" y="20" width="${X(28)-X(14)}" height="14" fill="#d5f5e3"/>`;
+ o+=`<text x="${X(7)}" y="31" font-size="12" text-anchor="middle" fill="#000">Fase folicular</text><text x="${X(21)}" y="31" font-size="12" text-anchor="middle" fill="#000">Fase lútea</text>`;
+ o+=`<rect x="${X(0)}" y="290" width="${X(5)-X(0)}" height="14" fill="#e6b0aa"/><rect x="${X(5)}" y="290" width="${X(14)-X(5)}" height="14" fill="#f9e79f"/><rect x="${X(14)}" y="290" width="${X(28)-X(14)}" height="14" fill="#abebc6"/>`;
+ o+=`<text x="${X(2.5)}" y="301" font-size="10" text-anchor="middle" fill="#000">menstrual</text><text x="${X(9.5)}" y="301" font-size="11" text-anchor="middle" fill="#000">proliferativa</text><text x="${X(21)}" y="301" font-size="11" text-anchor="middle" fill="#000">secretora</text>`;
+ o+=`<line x1="${X(14)}" y1="40" x2="${X(14)}" y2="270" stroke="#888" stroke-dasharray="4"/><text x="${X(14)}" y="48" font-size="11" text-anchor="middle" fill="currentColor">ovulação</text>`;
+ o+=`<line x1="50" y1="270" x2="730" y2="270" stroke="currentColor"/>`;
+ for(let k=0;k<=28;k+=7)o+=`<text x="${X(k)}" y="322" font-size="11" text-anchor="middle" fill="currentColor">dia ${k||1}</text>`;
+ for(const n in H)if(on[n])o+=`<path d="${path(H[n].v)}" fill="none" stroke="${H[n].c}" stroke-width="3"/>`;
+ o+=`<line x1="${X(d)}" y1="40" x2="${X(d)}" y2="270" stroke="currentColor" stroke-width="2"/>`;
+ let y=345,x=50;for(const n in H){o+=`<rect x="${x}" y="${y-9}" width="14" height="4" fill="${H[n].c}"/><text x="${x+18}" y="${y-3}" font-size="12" fill="currentColor">${n}</text>`;x+=150}
+ document.getElementById('s').innerHTML=o;document.getElementById('info').innerHTML=info(d)}
+const c=document.getElementById('chk');for(const n in H){const l=document.createElement('label');l.innerHTML=`<input type="checkbox" checked> <span style="color:${H[n].c}">■</span> ${n}`;l.firstChild.onchange=e=>{on[n]=e.target.checked?1:0;draw()};c.appendChild(l)}
+document.getElementById('d').oninput=draw;draw();
+</script></body></html>
