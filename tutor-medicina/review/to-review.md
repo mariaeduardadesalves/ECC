@@ -8,3 +8,4 @@
 - 2026-10-02 | Leydig (testosterona, entre túbulos) x Sertoli (sustenta, dentro do túbulo) trocadas | aberto
 - 2026-10-02 | Caminho: seminíferos → retos → rede testicular (ordem trocada) | aberto
 - 2026-10-02 | Pré-ejaculado é alcalino; 'sinal elétrico' (não nervoso) nos discos intercalares; cartilagem do nariz é hialina | aberto
+- 2026-10-02 | Teca (androgênio) x granulosa (aromatase/estrogênio) trocadas na 1ª tentativa | aberto
