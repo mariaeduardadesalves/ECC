@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ciclo normal x SOP</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:900px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} h2{font-size:15px;margin:14px 0 4px}
+svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+label{margin-right:14px;cursor:pointer;white-space:nowrap} .box{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;align-items:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:700px){.grid{grid-template-columns:1fr}}
+small,.n{color:var(--mut)} table{border-collapse:collapse;width:100%;font-size:14px;margin-top:10px} td,th{border:1px solid var(--bd);padding:5px 7px;text-align:left}
+select{font-size:14px;padding:3px}
+</style></head><body>
+<h1>Hormônios: ciclo normal x SOP</h1>
+<div class="box"><b>Modo:</b>
+<select id="m"><option value="side">Lado a lado</option><option value="over">Sobrepor (normal tracejado, SOP contínuo)</option></select>
+<span id="chk"></span></div>
+<div id="out"></div>
+<table>
+<tr><th></th><th>Ciclo normal</th><th>SOP (padrão típico)</th></tr>
+<tr><td>Folículos</td><td>1 dominante, os outros regridem</td><td>vários pequenos, <b>nenhum domina</b></td></tr>
+<tr><td>FSH</td><td>sobe no início, cai, pequeno pico na ovulação</td><td>baixo e constante</td></tr>
+<tr><td>LH</td><td>baixo, depois <b>PICO</b> no meio do ciclo</td><td><b>alto e constante, sem pico</b></td></tr>
+<tr><td>Estrogênio</td><td>sobe até um <b>pico</b> (feedback positivo)</td><td>nível médio e plano, <b>sem o salto</b></td></tr>
+<tr><td>Progesterona</td><td>sobe muito na fase lútea e cai</td><td><b>baixa o tempo todo</b> (sem corpo lúteo)</td></tr>
+<tr><td>Androgênio</td><td>baixo</td><td><b>alto</b> (teca + insulina)</td></tr>
+<tr><td>Ovulação / menstruação</td><td>ovula ~dia 14; menstrua ~28</td><td>sem ovulação; menstruação irregular ou ausente</td></tr>
+</table>
+<p class="n"><small>Esquema didático: mostra a tendência típica. Na SOP o ciclo costuma ser mais longo e irregular, e os valores variam de pessoa para pessoa. Não são medidas reais de exame.</small></p>
+<script>
+const days=[0,2,4,6,8,10,12,13,14,15,16,18,20,22,24,26,28];
+const C={FSH:'#2471a3',LH:'#d68910','Estrogênio':'#c0392b',Progesterona:'#1e8449','Androgênio':'#7d3c98'};
+const N={FSH:[.30,.45,.50,.42,.32,.24,.22,.30,.55,.30,.18,.14,.12,.12,.10,.15,.30],
+ LH:[.12,.12,.13,.13,.14,.15,.18,.45,1.0,.40,.20,.15,.15,.14,.12,.12,.12],
+ 'Estrogênio':[.12,.12,.15,.22,.35,.50,.72,.85,.80,.45,.35,.45,.55,.50,.35,.15,.12],
+ Progesterona:[.04,.04,.04,.04,.04,.05,.06,.08,.12,.25,.45,.8,1.0,.95,.70,.25,.05],
+ 'Androgênio':days.map(()=>.12)};
+const S={FSH:[.20,.19,.20,.18,.19,.18,.19,.20,.19,.18,.19,.20,.19,.18,.19,.20,.19],
+ LH:[.50,.55,.47,.58,.50,.54,.48,.56,.50,.55,.49,.57,.50,.54,.48,.55,.50],
+ 'Estrogênio':[.34,.36,.38,.35,.37,.40,.38,.36,.39,.37,.38,.40,.37,.36,.39,.38,.36],
+ Progesterona:days.map(()=>.05),
+ 'Androgênio':[.72,.76,.70,.78,.74,.77,.72,.79,.74,.77,.73,.78,.72,.76,.74,.78,.74]};
+const on={};for(const k in C)on[k]=1;
+const W=420,Hh=250,X=d=>40+d/28*(W-60),Y=v=>Hh-30-v*(Hh-70);
+function path(v){let p=days.map((d,i)=>[X(d),Y(v[i])]),s='M'+p[0];
+ for(let i=0;i<p.length-1;i++){const a=p[i-1]||p[i],b=p[i],c=p[i+1],e=p[i+2]||c;
+ s+=` C${b[0]+(c[0]-a[0])/6},${b[1]+(c[1]-a[1])/6} ${c[0]-(e[0]-b[0])/6},${c[1]-(e[1]-b[1])/6} ${c[0]},${c[1]}`}return s}
+function panel(title,sets){let o=`<svg viewBox="0 0 ${W} ${Hh+20}" role="img" aria-label="${title}"><text x="${W/2}" y="16" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">${title}</text>`;
+ o+=`<line x1="40" y1="${Hh-30}" x2="${W-20}" y2="${Hh-30}" stroke="currentColor"/>`;
+ [0,7,14,21,28].forEach(k=>o+=`<text x="${X(k)}" y="${Hh-14}" font-size="10" text-anchor="middle" fill="currentColor">dia ${k||1}</text>`);
+ sets.forEach(([d,dash])=>{for(const n in C)if(on[n])o+=`<path d="${path(d[n])}" fill="none" stroke="${C[n]}" stroke-width="2.6" ${dash?'stroke-dasharray="6 4" opacity=".7"':''}/>`});
+ let x=40;for(const n in C){o+=`<rect x="${x}" y="${Hh+4}" width="12" height="4" fill="${C[n]}"/><text x="${x+15}" y="${Hh+9}" font-size="9.5" fill="currentColor">${n}</text>`;x+=78}
+ return o+'</svg>'}
+function draw(){const m=document.getElementById('m').value;
+ document.getElementById('out').innerHTML=m=='side'?`<div class="grid">${panel('Ciclo normal',[[N,0]])}${panel('SOP',[[S,0]])}</div>`:panel('Normal (tracejado) x SOP (contínuo)',[[N,1],[S,0]])}
+const c=document.getElementById('chk');for(const n in C){const l=document.createElement('label');l.innerHTML=`<input type="checkbox" checked> <span style="color:${C[n]}">■</span> ${n}`;l.firstChild.onchange=e=>{on[n]=e.target.checked?1:0;draw()};c.appendChild(l)}
+document.getElementById('m').onchange=draw;draw();
+</script></body></html>
