@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neurulação e dobramento</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:860px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+.steps button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+.steps button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+svg text:not([fill="#000"]){paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Neurulação, mesoderma e dobramento (corte transversal)</h1>
+<p>Clique nos passos em ordem. Todos os desenhos são cortes <b>transversais</b> do embrião (a parte de cima é a costas).</p>
+<div class="steps" id="st"></div>
+<svg id="v" viewBox="0 0 760 340" role="img" aria-label="Corte transversal do embrião"></svg>
+<div id="info"></div>
+<p><small>Esquema didático, sem escala. Cores: azul = ectoderma de superfície · roxo = tecido neural · laranja = crista neural · verde = notocorda · vermelho = mesoderma · amarelo = endoderma.</small></p>
+<script>
+const cE='#5dade2',cN='#8e44ad',cC='#e67e22',cNo='#27ae60',cM='#e74c3c',cEn='#f4d03f';
+const S=[
+['1. Disco trilaminar','Três camadas: <b>ectoderma</b> (cima), <b>mesoderma</b> (meio) e <b>endoderma</b> (baixo). A <b>notocorda</b> (verde) fica no meio, na linha central.'],
+['2. Placa neural','A <b>notocorda induz</b> o ectoderma que está acima dela a se espessar: é a <b>placa neural</b> (roxo). Esse é o início da <b>neurulação</b> (3ª semana).'],
+['3. Sulco e pregas neurais','A placa se afunda no meio (<b>sulco neural</b>) e as bordas se elevam (<b>pregas neurais</b>).'],
+['4. Pregas se aproximam','As pregas se aproximam e começam a se fundir. Nas bordas há as células da <b>crista neural</b> (laranja).'],
+['5. Tubo neural','As pregas se fundem: forma-se o <b>tubo neural</b> (futuro encéfalo e medula) e ele <b>se separa</b> do ectoderma de superfície, que se fecha por cima. As <b>cristas neurais</b> ficam ao lado (dão nervos periféricos, gânglios, melanócitos). Se o tubo <b>não fecha</b>: defeito do tubo neural (ex.: espinha bífida, anencefalia); o <b>ácido fólico</b> ajuda a preveni-los.'],
+['6. Mesoderma se divide','O mesoderma se organiza: <b>paraxial</b> (somitos: esqueleto axial, músculo, derme), <b>intermediário</b> (sistema urogenital) e <b>lateral</b> (se divide em duas folhas com o <b>celoma intraembrionário</b> no meio: coração, serosas, músculo liso do intestino).'],
+['7. Dobramento lateral','O disco plano <b>se enrola</b> e vira um corpo em forma de tubo: o <b>endoderma</b> forma o <b>intestino primitivo</b>, o ectoderma cobre o corpo e o celoma vira a <b>cavidade do corpo</b>. O dobramento também ocorre na cabeça e na cauda (a boca e o ânus ficam nas extremidades).']];
+const L=110,R=650,cx=380;
+function sline(d,col,w){return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w||14}" stroke-linecap="round" stroke-linejoin="round"/>`}
+function draw(i){let o='';
+ const yE=120,yEn=215;
+ if(i<=5){
+  // endoderm
+  o+=sline(`M${L},${yEn} L${R},${yEn}`,cEn);
+  o+=`<text x="${R+8}" y="${yEn+5}" font-size="12" fill="currentColor">endoderma</text>`;
+  // mesoderm
+  if(i<5)o+=`<rect x="${L}" y="138" width="${R-L}" height="64" rx="8" fill="${cM}" opacity=".8"/><text x="${R+8}" y="175" font-size="12" fill="currentColor">mesoderma</text>`;
+  if(i==5)o+=`<rect x="${L}" y="150" width="${R-L}" height="52" rx="8" fill="${cM}" opacity=".8"/>`;
+  // ectoderm / neural
+  if(i==0)o+=sline(`M${L},${yE} L${R},${yE}`,cE);
+  if(i==1)o+=sline(`M${L},${yE} L${cx-70},${yE}`,cE)+sline(`M${cx+70},${yE} L${R},${yE}`,cE)+sline(`M${cx-70},${yE} L${cx+70},${yE}`,cN,22);
+  if(i==2)o+=sline(`M${L},${yE} L${cx-95},${yE}`,cE)+sline(`M${cx+95},${yE} L${R},${yE}`,cE)+sline(`M${cx-95},${yE} L${cx-70},${yE-12} L${cx-45},${yE-22} Q${cx},${yE+16} ${cx+45},${yE-22} L${cx+70},${yE-12} L${cx+95},${yE}`,cN,16);
+  if(i==3){o+=sline(`M${L},${yE} L${cx-90},${yE}`,cE)+sline(`M${cx+90},${yE} L${R},${yE}`,cE)+sline(`M${cx-90},${yE} L${cx-60},${yE-26} L${cx-28},${yE-40} Q${cx},${yE+4} ${cx+28},${yE-40} L${cx+60},${yE-26} L${cx+90},${yE}`,cN,16);
+   [[-28,-44],[28,-44]].forEach(p=>o+=`<circle cx="${cx+p[0]}" cy="${yE+p[1]}" r="7" fill="${cC}"/>`)}
+  if(i==4||i==5){o+=sline(`M${L},${yE-30} L${cx-60},${yE-30}`,cE)+sline(`M${cx+60},${yE-30} L${R},${yE-30}`,cE)+sline(`M${cx-60},${yE-30} L${cx+60},${yE-30}`,cE);
+   o+=`<ellipse cx="${cx}" cy="${yE+2}" rx="30" ry="26" fill="#f5eef8" stroke="${cN}" stroke-width="14"/><text x="${cx+56}" y="${yE+6}" font-size="12" fill="currentColor">tubo neural</text>`;
+   [[-52,-14],[52,-14]].forEach(p=>o+=`<circle cx="${cx+p[0]}" cy="${yE+p[1]}" r="8" fill="${cC}"/>`);
+   o+=`<text x="${cx-60}" y="${yE-40}" text-anchor="end" font-size="12" fill="currentColor">crista neural</text>`;
+   o+=`<text x="${R+8}" y="${yE-25}" font-size="12" fill="currentColor">ectoderma</text>`}
+  if(i>=1)o+=`<circle cx="${cx}" cy="172" r="14" fill="${cNo}" stroke="#145a32" stroke-width="2"/><text x="${cx+22}" y="176" font-size="12" fill="currentColor">notocorda</text>`;
+  if(i<=3)o+=`<text x="${R+8}" y="${yE+5}" font-size="12" fill="currentColor">ectoderma</text>`;
+  if(i==1)o+=`<text x="${cx}" y="${yE-22}" text-anchor="middle" font-size="12" fill="currentColor">placa neural</text>`;
+  if(i==2)o+=`<text x="${cx}" y="${yE-36}" text-anchor="middle" font-size="12" fill="currentColor">sulco neural · pregas neurais</text>`;
+  if(i==3)o+=`<text x="${cx}" y="${yE-62}" text-anchor="middle" font-size="12" fill="currentColor">pregas se aproximam</text>`;
+  if(i==5){ // mesoderm labels over mesoderm region at step 6 handled below
+  }
+ }
+ if(i==5){ // step 6: re-draw mesoderm subdivided
+  o=''; o+=sline(`M${L},${yEn} L${R},${yEn}`,cEn)+`<text x="${R+8}" y="${yEn+5}" font-size="12" fill="currentColor">endoderma</text>`;
+  o+=sline(`M${L},${yE-30} L${R},${yE-30}`,cE)+`<ellipse cx="${cx}" cy="${yE+2}" rx="30" ry="26" fill="#f5eef8" stroke="${cN}" stroke-width="14"/>`+`<circle cx="${cx}" cy="176" r="12" fill="${cNo}" stroke="#145a32" stroke-width="2"/>`;
+  [[-52,-14],[52,-14]].forEach(p=>o+=`<circle cx="${cx+p[0]}" cy="${yE+p[1]}" r="8" fill="${cC}"/>`);
+  [-1,1].forEach(s=>{
+   o+=`<rect x="${cx+s*80-26}" y="125" width="52" height="52" rx="12" fill="${cM}" stroke="#7b241c"/><text x="${cx+s*80}" y="156" text-anchor="middle" font-size="11" fill="#000">somito</text>`;
+   o+=`<rect x="${cx+s*150-12}" y="132" width="24" height="40" rx="6" fill="#f1948a" stroke="#7b241c"/>`;
+   o+=`<rect x="${cx+s*(215)-36}" y="138" width="${72}" height="16" rx="6" fill="${cM}" stroke="#7b241c"/><rect x="${cx+s*215-36}" y="176" width="72" height="16" rx="6" fill="${cM}" stroke="#7b241c"/><text x="${cx+s*215}" y="168" text-anchor="middle" font-size="10" fill="currentColor">celoma</text>`});
+  o+=`<text x="${cx-80}" y="108" text-anchor="middle" font-size="12" fill="currentColor">paraxial</text><text x="${cx+80}" y="108" text-anchor="middle" font-size="12" fill="currentColor">paraxial</text>`;
+  o+=`<text x="${cx-150}" y="205" text-anchor="middle" font-size="12" fill="currentColor">intermediário</text><text x="${cx+150}" y="205" text-anchor="middle" font-size="12" fill="currentColor">intermediário</text>`;
+  o+=`<text x="${cx-215}" y="132" text-anchor="middle" font-size="12" fill="currentColor">lateral</text><text x="${cx+215}" y="132" text-anchor="middle" font-size="12" fill="currentColor">lateral</text>`}
+ if(i==6){const c0=170;
+  o+=`<ellipse cx="${cx}" cy="${c0}" rx="190" ry="125" fill="none" stroke="${cE}" stroke-width="14"/>`;
+  o+=`<ellipse cx="${cx}" cy="${c0}" rx="170" ry="106" fill="${cM}" opacity=".35"/>`;
+  o+=`<ellipse cx="${cx}" cy="${c0+22}" rx="62" ry="46" fill="#fef9e7" stroke="${cEn}" stroke-width="12"/><text x="${cx}" y="${c0+28}" text-anchor="middle" font-size="12" fill="#000">intestino primitivo</text>`;
+  o+=`<ellipse cx="${cx}" cy="${c0-84}" rx="22" ry="18" fill="#f5eef8" stroke="${cN}" stroke-width="10"/><circle cx="${cx}" cy="${c0-48}" r="10" fill="${cNo}"/>`;
+  [-70,70].forEach(x=>o+=`<rect x="${cx+x-18}" y="${c0-78}" width="36" height="36" rx="10" fill="${cM}" stroke="#7b241c"/>`);
+  o+=`<text x="${cx}" y="${c0-118}" text-anchor="middle" font-size="12" fill="currentColor">tubo neural (costas)</text>`;
+  o+=`<text x="${cx+14}" y="${c0-14}" font-size="12" fill="currentColor">notocorda</text><text x="${cx+84}" y="${c0-58}" font-size="12" fill="currentColor">somito</text>`;
+  o+=`<text x="${cx+200}" y="${c0+10}" font-size="12" fill="currentColor">parede do corpo</text>`;
+  o+=`<text x="${cx+110}" y="${c0+70}" font-size="12" fill="currentColor">celoma (cavidade)</text>`;
+  o+=`<text x="${cx}" y="${c0+110}" text-anchor="middle" font-size="12" fill="currentColor">ventre</text>`}
+ o+=`<text x="20" y="26" font-size="15" font-weight="600" fill="currentColor">${S[i][0]}</text>`;
+ return o}
+function setS(i){document.querySelectorAll('#st button').forEach((b,k)=>b.setAttribute('aria-pressed',k==i));
+ document.getElementById('v').innerHTML=draw(i);document.getElementById('info').innerHTML=`<b>${S[i][0]}</b><br>${S[i][1]}`}
+const st=document.getElementById('st');S.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s[0];b.onclick=()=>setS(i);st.appendChild(b)});setS(0);
+</script></body></html>
