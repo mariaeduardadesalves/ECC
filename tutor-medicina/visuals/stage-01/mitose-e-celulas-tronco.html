@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mitose e células-tronco</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:860px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+.tabs button,.steps button{font:inherit;padding:6px 12px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+.tabs button[aria-pressed=true],.steps button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px} small,.n{color:var(--mut)}
+svg text:not([fill="#000"]){paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:10px} td,th{border:1px solid var(--bd);padding:5px 7px;text-align:left}
+.hide{display:none}
+</style></head><body>
+<h1>Mitose e células-tronco</h1>
+<div class="tabs"><button id="t1" aria-pressed="true">Mitose (PMAT)</button><button id="t2" aria-pressed="false">Células-tronco</button></div>
+
+<section id="p1">
+<p>Escolha a fase. Mnemônico: <b>P</b>rófase → <b>M</b>etáfase → <b>A</b>náfase → <b>T</b>elófase (+ citocinese).</p>
+<div class="steps" id="st"></div>
+<svg id="m" viewBox="0 0 760 290" role="img" aria-label="Fases da mitose"></svg>
+<div id="info"></div>
+<table><tr><th>Fase</th><th>O que acontece</th><th>Truque para lembrar</th></tr>
+<tr><td>Prófase</td><td>Cromossomos se condensam (cada um com 2 cromátides); o fuso começa a se formar; o envoltório do núcleo se desfaz</td><td><b>P</b>reparar: "<b>P</b>ôr em ordem os cromossomos"</td></tr>
+<tr><td>Metáfase</td><td>Cromossomos alinhados no <b>meio</b> da célula (placa metafásica)</td><td><b>M</b>etáfase = <b>M</b>eio</td></tr>
+<tr><td>Anáfase</td><td>As cromátides-irmãs se <b>separam</b> e vão para <b>polos opostos</b></td><td><b>A</b>náfase = <b>A</b>fastam</td></tr>
+<tr><td>Telófase (+ citocinese)</td><td>Dois núcleos se refazem; depois a <b>citocinese</b> divide o citoplasma em duas células</td><td><b>T</b>elófase = <b>T</b>érmino (duas células)</td></tr></table>
+</section>
+
+<section id="p2" class="hide">
+<p>Quanto mais para baixo, mais <b>especializada</b> a célula e menos coisas ela pode formar.</p>
+<svg id="c" viewBox="0 0 760 420" role="img" aria-label="Potencial das células-tronco"></svg>
+<table><tr><th>Tipo</th><th>Pode formar</th><th>Onde</th><th>Truque</th></tr>
+<tr><td><b>Totipotente</b></td><td>o embrião <b>e</b> os anexos (placenta)</td><td>zigoto e primeiros blastômeros</td><td><b>Toti</b> = <b>t</b>udo</td></tr>
+<tr><td><b>Pluripotente</b></td><td><b>todos</b> os tecidos do embrião, <b>sem</b> a placenta</td><td>embrioblasto do blastocisto</td><td><b>Pluri</b> = <b>plur</b>al (vários tecidos)</td></tr>
+<tr><td><b>Multipotente</b></td><td><b>só uma linhagem</b> (ex.: células do sangue)</td><td>células-tronco adultas (medula óssea)</td><td><b>Multi</b> = <b>alguns</b> tipos</td></tr></table>
+<p class="n"><small>Na medicina, as células-tronco interessam para repor células perdidas ou lesadas (terapias futuras e transplantes, como o de medula óssea).</small></p>
+</section>
+
+<script>
+const P=[
+ ['Interfase','A célula <b>duplica o DNA</b> (cada cromossomo passa a ter 2 cromátides) e se prepara. Ainda não é mitose.'],
+ ['Prófase','Os cromossomos <b>se condensam</b> e aparecem como "X"; o <b>fuso</b> começa a se formar a partir dos polos; o envoltório do núcleo se desfaz.'],
+ ['Metáfase','Os cromossomos se alinham no <b>equador</b> (placa metafásica), presos às fibras do fuso.'],
+ ['Anáfase','As <b>cromátides-irmãs se separam</b> e são puxadas para <b>polos opostos</b>. A célula se alonga.'],
+ ['Telófase','Os cromossomos chegam aos polos e <b>dois núcleos</b> se refazem (o envoltório volta). A célula começa a se <b>estrangular</b> no meio.'],
+ ['Citocinese','O citoplasma se divide e surgem <b>duas células-filhas</b>, iguais entre si e iguais à célula-mãe (mesmo número de cromossomos).']];
+function X(x,y,a,c,s){s=s||1;return `<g transform="translate(${x},${y}) rotate(${a}) scale(${s})" stroke="${c}" stroke-width="7" stroke-linecap="round"><line x1="-9" y1="-18" x2="9" y2="18"/><line x1="9" y1="-18" x2="-9" y2="18"/></g>`}
+function V(x,y,dir,c,s){s=s||1;return `<g transform="translate(${x},${y}) scale(${dir*s},${s})" stroke="${c}" stroke-width="7" stroke-linecap="round" fill="none"><polyline points="10,-18 -6,0 10,18"/></g>`}
+function spindle(xl,xr,cx,cy,n){let o='';for(let i=-n;i<=n;i++)o+=`<line x1="${xl}" y1="${cy}" x2="${cx}" y2="${cy+i*22}" stroke="#999" stroke-width="1.4"/><line x1="${xr}" y1="${cy}" x2="${cx}" y2="${cy+i*22}" stroke="#999" stroke-width="1.4"/>`;return o}
+function drawM(i){let o='',cx=380,cy=145,R=115,cR='#c0392b',cB='#2471a3';
+ const cell=`<ellipse cx="${cx}" cy="${cy}" rx="${i==3?150:R+10}" ry="${R}" fill="#fdebd0" stroke="#935116" stroke-width="3"/>`;
+ if(i==4){o+=`<circle cx="${cx-80}" cy="${cy}" r="102" fill="#fdebd0" stroke="#935116" stroke-width="3"/><circle cx="${cx+80}" cy="${cy}" r="102" fill="#fdebd0" stroke="#935116" stroke-width="3"/><circle cx="${cx-95}" cy="${cy}" r="44" fill="#d6eaf8" stroke="#2471a3" stroke-width="2" stroke-dasharray="4 3"/><circle cx="${cx+95}" cy="${cy}" r="44" fill="#d6eaf8" stroke="#2471a3" stroke-width="2" stroke-dasharray="4 3"/>`;
+  o+=[[-105,-12,cR],[-85,12,cR],[-110,14,cB],[-82,-10,cB]].map(p=>`<circle cx="${cx+p[0]}" cy="${cy+p[1]}" r="7" fill="${p[2]}"/>`).join('')+[[105,-12,cR],[85,12,cR],[110,14,cB],[82,-10,cB]].map(p=>`<circle cx="${cx+p[0]}" cy="${cy+p[1]}" r="7" fill="${p[2]}"/>`).join('');
+  o+=`<text x="${cx}" y="284" text-anchor="middle" font-size="12" fill="currentColor">dois núcleos se refazem · a célula começa a se estrangular no meio</text>`;return o}
+ if(i==5){o+=`<circle cx="${cx-120}" cy="${cy}" r="100" fill="#fdebd0" stroke="#935116" stroke-width="3"/><circle cx="${cx+120}" cy="${cy}" r="100" fill="#fdebd0" stroke="#935116" stroke-width="3"/>`;
+  o+=`<circle cx="${cx-125}" cy="${cy}" r="48" fill="#d6eaf8" stroke="#2471a3" stroke-width="2"/><circle cx="${cx+125}" cy="${cy}" r="48" fill="#d6eaf8" stroke="#2471a3" stroke-width="2"/>`;
+  o+=[[-135,-14,cR],[-115,14,cR],[-140,16,cB],[-112,-12,cB]].map(p=>`<circle cx="${cx+p[0]}" cy="${cy+p[1]}" r="7" fill="${p[2]}"/>`).join('')+[[135,-14,cR],[115,14,cR],[140,16,cB],[112,-12,cB]].map(p=>`<circle cx="${cx+p[0]}" cy="${cy+p[1]}" r="7" fill="${p[2]}"/>`).join('');
+  o+=`<text x="${cx}" y="284" text-anchor="middle" font-size="12" fill="currentColor">duas células-filhas, cada uma com o mesmo número de cromossomos</text>`;return o}
+ o+=cell;
+ if(i==0){o+=`<circle cx="${cx}" cy="${cy}" r="55" fill="#d6eaf8" stroke="#2471a3" stroke-width="3"/><path d="M345 130 q15 -25 30 0 t30 10 t-20 25 t-40 -15" fill="none" stroke="${cR}" stroke-width="3"/><path d="M360 160 q20 15 40 -5" fill="none" stroke="${cB}" stroke-width="3"/><text x="${cx}" y="284" text-anchor="middle" font-size="12" fill="currentColor">núcleo com DNA (cromatina) duplicado</text>`}
+ if(i==1){o+=`<circle cx="${cx}" cy="${cy}" r="62" fill="none" stroke="#2471a3" stroke-width="2" stroke-dasharray="5 4"/>`+X(cx-25,cy-25,20,cR)+X(cx+20,cy-15,-30,cR)+X(cx-15,cy+25,60,cB,.8)+X(cx+25,cy+28,10,cB,.8)+`<circle cx="${cx-95}" cy="${cy}" r="6" fill="#555"/><circle cx="${cx+95}" cy="${cy}" r="6" fill="#555"/><text x="${cx}" y="284" text-anchor="middle" font-size="12" fill="currentColor">envoltório do núcleo se desfazendo · fuso se formando</text>`}
+ if(i==2){o+=spindle(cx-110,cx+110,cx,cy,3)+X(cx,cy-55,0,cR)+X(cx,cy-18,0,cR)+X(cx,cy+18,0,cB,.8)+X(cx,cy+52,0,cB,.8)+`<line x1="${cx}" y1="30" x2="${cx}" y2="260" stroke="#999" stroke-dasharray="3 5"/><text x="${cx+10}" y="46" font-size="12" fill="currentColor">equador</text>`}
+ if(i==3){o+=spindle(cx-130,cx+130,cx,cy,3)+[-62,-24,14,50].map((y,k)=>V(cx-70,cy+y,1,k<2?cR:cB,.62)+V(cx+70,cy+y,-1,k<2?cR:cB,.62)).join('')+`<text x="${cx-120}" y="30" font-size="12" fill="currentColor">polo</text><text x="${cx+95}" y="30" font-size="12" fill="currentColor">polo</text>`}
+ if(i==3&&false){}
+ return o}
+function setM(i){document.querySelectorAll('#st button').forEach((b,k)=>b.setAttribute('aria-pressed',k==i));
+ document.getElementById('m').innerHTML=drawM(i)+`<text x="20" y="24" font-size="15" font-weight="600" fill="currentColor">${P[i][0]}</text>`;
+ document.getElementById('info').innerHTML=`<b>${P[i][0]}</b>: ${P[i][1]}`}
+const st=document.getElementById('st');P.forEach((p,i)=>{const b=document.createElement('button');b.textContent=p[0];b.onclick=()=>setM(i);st.appendChild(b)});setM(0);
+function box(x,y,w,h,f,t1,t2,c){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${f}" stroke="#555" stroke-width="1.5"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="14" font-weight="700" fill="#000">${t1}</text><text x="${x+w/2}" y="${y+42}" text-anchor="middle" font-size="12" fill="#000">${t2}</text>`}
+function arrow(x1,y1,x2,y2){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#555" stroke-width="2"/><polygon points="${x2},${y2} ${x2-5},${y2-9} ${x2+5},${y2-9}" fill="#555"/>`}
+function drawC(){let o='';
+ o+=box(250,10,260,52,'#f9e79f','TOTIPOTENTE','zigoto → primeiras células (até ~8)');
+ o+=`<text x="520" y="40" font-size="12" fill="currentColor">forma embrião + placenta/anexos</text>`;
+ o+=arrow(380,62,380,88);
+ o+=box(250,88,260,52,'#aed6f1','BLASTOCISTO','embrioblasto + trofoblasto');
+ o+=arrow(330,140,200,175)+arrow(430,140,560,175);
+ o+=box(70,175,260,52,'#a9dfbf','PLURIPOTENTE (embrioblasto)','todos os tecidos do embrião');
+ o+=box(430,175,260,52,'#fadbd8','Trofoblasto','placenta (não é pluripotente)');
+ o+=arrow(200,227,200,255);
+ o+=box(70,255,260,52,'#d2b4de','MULTIPOTENTE','células-tronco adultas (uma linhagem)');
+ o+=arrow(200,307,200,335);
+ o+=box(70,335,260,52,'#d5dbdb','CÉLULA ESPECIALIZADA','ex.: hemácia, neurônio, célula muscular');
+ o+=`<text x="470" y="270" font-size="12" fill="currentColor">Exemplo de multipotente: célula-tronco da</text><text x="470" y="288" font-size="12" fill="currentColor">medula óssea → só forma células do sangue</text>`;
+ o+=`<text x="470" y="360" font-size="12" fill="currentColor">↓ Quanto mais para baixo, menos opções</text><text x="470" y="378" font-size="12" fill="currentColor">de destino a célula tem.</text>`;
+ document.getElementById('c').innerHTML=o}
+drawC();
+const t1=document.getElementById('t1'),t2=document.getElementById('t2');
+t1.onclick=()=>{p1.classList.remove('hide');p2.classList.add('hide');t1.setAttribute('aria-pressed',true);t2.setAttribute('aria-pressed',false)};
+t2.onclick=()=>{p2.classList.remove('hide');p1.classList.add('hide');t2.setAttribute('aria-pressed',true);t1.setAttribute('aria-pressed',false)};
+</script></body></html>
