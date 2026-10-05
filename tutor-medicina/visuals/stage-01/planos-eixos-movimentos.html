@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planos, eixos e movimentos</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc;--body:#d5dbe0;--bodys:#7f8c8d}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444;--body:#3b444b;--bodys:#95a5a6}}
+body{font-family:system-ui,sans-serif;max-width:900px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
+button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+#sl{width:100%;max-width:520px}
+svg text{fill:var(--fg);font-size:13px;paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+svg .t{font-size:16px;font-weight:bold}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Planos, eixos e movimentos</h1>
+<div id="tabs"></div><div id="sub"></div>
+<div id="sliderbox" style="display:none">Mova o controle: <input id="sl" type="range"></div>
+<svg id="v" viewBox="0 0 800 430" role="img" aria-label="Esquema anatômico"></svg>
+<div id="info"></div>
+<p><small>Esquemas didáticos. Posição anatômica: em pé, olhando à frente, palmas das mãos para frente.</small></p>
+<script>
+const C={sag:'#2e86c1',cor:'#e67e22',tra:'#27ae60'};
+const tx=(x,y,s,c='',a='middle',f='')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}" ${f?`style="fill:${f}"`:''}>${s}</text>`;
+const body=()=>`<g fill="var(--body)" stroke="var(--bodys)" stroke-width="2">
+<circle cx="400" cy="70" r="24"/><rect x="388" y="92" width="24" height="14"/>
+<rect x="352" y="104" width="96" height="148" rx="22"/>
+<line x1="352" y1="122" x2="322" y2="240" stroke-width="14" stroke-linecap="round" stroke="var(--bodys)"/><line x1="448" y1="122" x2="478" y2="240" stroke-width="14" stroke-linecap="round" stroke="var(--bodys)"/>
+<line x1="380" y1="250" x2="374" y2="392" stroke-width="18" stroke-linecap="round" stroke="var(--bodys)"/><line x1="420" y1="250" x2="426" y2="392" stroke-width="18" stroke-linecap="round" stroke="var(--bodys)"/></g>`;
+const P=(x,y,z)=>`${400+x+0.5*z},${230-y-0.3*z}`;
+const arrow=(c)=>`<defs><marker id="a${c.slice(1)}" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c}"/></marker></defs>`;
+
+let tab=0,sub=0;
+function planos(){
+ const sel=sub;
+ const planes=[
+  {k:'sag',n:'Sagital',pts:[P(0,-165,-90),P(0,-165,90),P(0,195,90),P(0,195,-90)],lab:[455,60,'SAGITAL: direita / esquerda']},
+  {k:'cor',n:'Coronal (frontal)',pts:[P(-120,-165,0),P(120,-165,0),P(120,195,0),P(-120,195,0)],lab:[130,60,'CORONAL: frente / trás']},
+  {k:'tra',n:'Transversal (axial)',pts:[P(-120,0,-90),P(120,0,-90),P(120,0,90),P(-120,0,90)],lab:[600,200,'TRANSVERSAL: cima / baixo']}];
+ let o=body();
+ planes.forEach((p,i)=>{const on=i==sel;o+=`<polygon points="${p.pts.join(' ')}" fill="${C[p.k]}" opacity="${on?.4:.08}" stroke="${C[p.k]}" stroke-width="${on?3:1}"/>`;});
+ const p=planes[sel];o+=tx(p.lab[0],p.lab[1],p.lab[2],'t','middle',C[p.k]);
+ o+=tx(400,28,'frente do corpo ↓ (para você)','',  'middle','var(--mut)').replace('frente do corpo ↓ (para você)','');
+ return o}
+const planInfo=[
+ '<b>Plano sagital:</b> corta o corpo em <b>direita e esquerda</b>. O <b>mediano</b> passa exatamente no meio. Movimentos nele: <b>flexão e extensão</b>.',
+ '<b>Plano coronal (frontal):</b> corta em <b>frente (anterior) e trás (posterior)</b>. Pense numa coroa. Movimentos nele: <b>abdução e adução</b>.',
+ '<b>Plano transversal (axial):</b> corta em <b>cima (superior) e embaixo (inferior)</b>, como as fatias da tomografia. Movimento nele: <b>rotação</b>.'];
+
+function eixos(){
+ const L=[
+  {k:'tra',n:'Transversal',a:[P(-170,0,0),P(170,0,0)],t:[565,222,'eixo TRANSVERSAL (direita–esquerda)']},
+  {k:'cor',n:'Anteroposterior',a:[P(0,0,-120),P(0,0,120)],t:[470,160,'eixo ANTEROPOSTERIOR (frente–trás)']},
+  {k:'sag',n:'Longitudinal',a:[P(0,-185,0),P(0,205,0)],t:[400,20,'eixo LONGITUDINAL (cima–baixo)']}];
+ let o=body();
+ L.forEach((l,i)=>{const on=i==sub,c=C[l.k];o+=arrow(c)+`<line x1="${l.a[0].split(',')[0]}" y1="${l.a[0].split(',')[1]}" x2="${l.a[1].split(',')[0]}" y2="${l.a[1].split(',')[1]}" stroke="${c}" stroke-width="${on?5:2}" opacity="${on?1:.25}" marker-end="url(#a${c.slice(1)})" marker-start="url(#a${c.slice(1)})"/>`});
+ const l=L[sub];o+=tx(l.t[0],l.t[1],l.t[2],'t','middle',C[l.k]);
+ return o}
+const eixInfo=[
+ '<b>Eixo transversal:</b> linha da direita para a esquerda. Em torno dele ocorrem <b>flexão e extensão</b> (no plano sagital).',
+ '<b>Eixo anteroposterior:</b> linha da frente para trás. Em torno dele ocorrem <b>abdução e adução</b> (no plano coronal).',
+ '<b>Eixo longitudinal:</b> linha de cima para baixo. Em torno dele ocorre a <b>rotação</b> (no plano transversal).'];
+
+// movimentos (com slider)
+const cfg=[
+ {n:'Flexão / extensão',min:-50,max:180,v:0},
+ {n:'Abdução / adução',min:-40,max:170,v:0},
+ {n:'Rotação medial / lateral',min:-70,max:70,v:0},
+ {n:'Circundução',min:0,max:360,v:0}];
+const R=a=>a*Math.PI/180;
+function mov(){
+ const a=+document.getElementById('sl').value;let o='';
+ if(sub==0){
+  const S=[300,130],L=230,tip=[S[0]+L*Math.sin(R(a)),S[1]+L*Math.cos(R(a))];
+  o+=`<g fill="var(--body)" stroke="var(--bodys)" stroke-width="2"><circle cx="270" cy="70" r="26"/><rect x="235" y="100" width="60" height="150" rx="22"/><line x1="265" y1="250" x2="262" y2="400" stroke-width="22" stroke-linecap="round"/></g>`;
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="300" y2="${S[1]+L}" stroke="#999" stroke-dasharray="5 4" stroke-width="3"/>`;
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${tip[0]}" y2="${tip[1]}" stroke="${C.sag}" stroke-width="14" stroke-linecap="round"/><circle cx="${S[0]}" cy="${S[1]}" r="8" fill="#c0392b"/>`;
+  o+=tx(130,40,'VISTA LATERAL (de perfil)','t')+tx(215,70,'frente →','','end');
+  o+=tx(520,190,a>2?'FLEXÃO ('+Math.round(a)+'°)':a<-2?'EXTENSÃO ('+Math.round(-a)+'°)':'posição anatômica (0°)','t','start',C.sag);
+  o+=tx(520,215,'ponto vermelho = eixo transversal','','start')+tx(520,235,'(perpendicular à tela)','','start');
+  o+=tx(520,265,'plano: sagital','','start');
+ }
+ if(sub==1){
+  const S=[440,125],L=230,tip=[S[0]+L*Math.sin(R(a)),S[1]+L*Math.cos(R(a))];
+  o+=body().replace(/<line x1="448"[^>]*>/,'');
+  o+=`<line x1="400" y1="20" x2="400" y2="410" stroke="#999" stroke-dasharray="5 4"/>`+tx(400,14,'plano mediano','','middle','var(--mut)');
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${S[0]}" y2="${S[1]+L}" stroke="#999" stroke-dasharray="5 4" stroke-width="3"/>`;
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${tip[0]}" y2="${tip[1]}" stroke="${C.cor}" stroke-width="14" stroke-linecap="round"/><circle cx="${S[0]}" cy="${S[1]}" r="8" fill="#c0392b"/>`;
+  o+=tx(600,150,a>2?'ABDUÇÃO ('+Math.round(a)+'°)':a<-2?'ADUÇÃO ('+Math.round(-a)+'°)':'posição anatômica (0°)','t','start',C.cor);
+  o+=tx(600,175,'ab = AFASTA do mediano','','start')+tx(600,195,'ad = APROXIMA do mediano','','start');
+  o+=tx(600,225,'ponto vermelho = eixo anteroposterior','','start')+tx(600,245,'plano: coronal','','start');
+ }
+ if(sub==2){
+  const S=[310,300],L=150,tip=[S[0]+L*Math.sin(R(a)),S[1]-L*Math.cos(R(a))];
+  o+=`<ellipse cx="400" cy="330" rx="120" ry="48" fill="var(--body)" stroke="var(--bodys)" stroke-width="2"/><ellipse cx="400" cy="330" rx="22" ry="30" fill="none" stroke="var(--bodys)"/>`;
+  o+=`<line x1="400" y1="40" x2="400" y2="400" stroke="#999" stroke-dasharray="5 4"/>`+tx(400,62,'plano mediano','','middle','var(--mut)')+tx(250,200,'frente ↑','','end','var(--mut)');
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${S[0]}" y2="${S[1]-L}" stroke="#999" stroke-dasharray="5 4" stroke-width="3"/>`;
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${tip[0]}" y2="${tip[1]}" stroke="${C.tra}" stroke-width="14" stroke-linecap="round"/><circle cx="${S[0]}" cy="${S[1]}" r="9" fill="#c0392b"/>`;
+  o+=tx(130,40,'VISTA DE CIMA (cotovelo dobrado 90°)','t','start');
+  o+=tx(520,120,a>2?'ROTAÇÃO MEDIAL ('+Math.round(a)+'°)':a<-2?'ROTAÇÃO LATERAL ('+Math.round(-a)+'°)':'posição neutra (0°)','t','start',C.tra);
+  o+=tx(520,145,'medial = vira para o mediano','','start')+tx(520,165,'lateral = vira para fora','','start');
+  o+=tx(520,195,'ponto vermelho = eixo longitudinal','','start')+tx(520,215,'(vertical, visto de cima)','','start')+tx(520,235,'plano: transversal','','start');
+ }
+ if(sub==3){
+  const S=[352,125],L=170,al=45,th=a;
+  const sinA=Math.sin(R(al)),pt=t=>{const d=L*sinA*Math.sin(R(t)),x=S[0]-L*sinA*Math.cos(R(t))+0.5*d,y=S[1]+L*Math.cos(R(al))-0.3*d;return [x,y]};
+  o+=body();
+  let tr='';for(let t=0;t<=360;t+=10){const q=pt(t);tr+=q.join(',')+' '}
+  o+=`<polygon points="${tr}" fill="${C.sag}" opacity=".12" stroke="${C.sag}" stroke-dasharray="5 4" stroke-width="2"/>`;
+  const tip=pt(th);
+  o+=`<line x1="${S[0]}" y1="${S[1]}" x2="${tip[0]}" y2="${tip[1]}" stroke="${C.sag}" stroke-width="12" stroke-linecap="round"/><circle cx="${tip[0]}" cy="${tip[1]}" r="9" fill="#c0392b"/>`;
+  const t=((th%360)+360)%360,ph=t<45||t>=315?'ABDUÇÃO':t<135?'FLEXÃO':t<225?'ADUÇÃO':'EXTENSÃO';
+  o+=tx(560,150,'Fase: '+ph,'t','start',C.sag)+tx(560,180,'a mão desenha um cone','','start')+tx(560,200,'= CIRCUNDUÇÃO','','start')+tx(560,230,'combina flexão, abdução,','','start')+tx(560,248,'extensão e adução em sequência','','start');
+ }
+ return o}
+const movInfo=[
+ '<b>Flexão</b> diminui o ângulo entre os segmentos (braço à frente); <b>extensão</b> aumenta (braço para trás). Plano <b>sagital</b>, eixo <b>transversal</b>.',
+ '<b>Abdução</b> afasta do plano mediano; <b>adução</b> aproxima. Plano <b>coronal</b>, eixo <b>anteroposterior</b>.',
+ '<b>Rotação:</b> gira em torno do próprio eixo. <b>Medial</b> (interna) vira a face anterior para o mediano; <b>lateral</b> (externa) para fora. Plano <b>transversal</b>, eixo <b>longitudinal</b>.',
+ '<b>Circundução:</b> o segmento descreve um <b>cone</b>, combinando flexão, abdução, extensão e adução em sequência.'];
+
+const TABS=[['Planos',['Sagital','Coronal','Transversal'],planos,planInfo],
+ ['Eixos',['Transversal','Anteroposterior','Longitudinal'],eixos,eixInfo],
+ ['Movimentos',cfg.map(c=>c.n),mov,movInfo]];
+const tb=document.getElementById('tabs'),sb=document.getElementById('sub'),sl=document.getElementById('sl');
+TABS.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t[0];b.onclick=()=>{tab=i;sub=0;setup()};tb.appendChild(b)});
+function setup(){
+ sb.innerHTML='';TABS[tab][1].forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>{sub=i;if(tab==2)initSl();draw()};sb.appendChild(b)});
+ if(tab==2)initSl();document.getElementById('sliderbox').style.display=tab==2?'block':'none';draw()}
+function initSl(){const c=cfg[sub];sl.min=c.min;sl.max=c.max;sl.value=c.v;sl.step=1}
+sl.oninput=draw;
+function draw(){
+ document.getElementById('v').innerHTML=TABS[tab][2]();
+ document.getElementById('info').innerHTML=TABS[tab][3][sub];
+ [...tb.children].forEach((b,i)=>b.setAttribute('aria-pressed',i==tab));
+ [...sb.children].forEach((b,i)=>b.setAttribute('aria-pressed',i==sub));
+}
+setup();
+</script></body></html>
