@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dobramento do embrião</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:860px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+svg text{fill:var(--fg);paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Dobramento do embrião (4ª semana)</h1>
+<p>Escolha o corte e avance pelos estágios. O disco achatado vira um corpo tubular.</p>
+<div id="modes"></div><div id="st"></div>
+<svg id="v" viewBox="0 0 760 400" role="img" aria-label="Dobramento do embrião"></svg>
+<div id="info"></div>
+<p><small>Esquema didático, sem escala. Azul = ectoderma · amarelo = endoderma · vermelho = mesoderma · roxo = tubo neural · verde = notocorda.</small></p>
+<script>
+const cE='#5dade2',cN='#8e44ad',cNo='#27ae60',cM='#e74c3c',cEn='#f4d03f',cMl='#f5b7b1';
+const modes=[
+ {n:'Dobramento lateral (corte transversal)',L:[190,190],a:50,k:.0215,
+  txt:[
+  ['Disco plano','Corte transversal do disco trilaminar, já com o tubo neural. Em cima: costas (dorso). Embaixo: o endoderma, que vai formar o intestino.'],
+  ['Bordas começam a descer','As bordas laterais crescem mais rápido e se curvam para baixo (ventralmente). O endoderma fica na face de dentro da curva.'],
+  ['Parede do corpo se fecha','As bordas se aproximam na linha média ventral. O ectoderma (azul) vira a pele que reveste o corpo; o endoderma (amarelo) é "puxado" para dentro.'],
+  ['Corpo tubular','As bordas se encontram no futuro umbigo (anel umbilical). O endoderma vira o <b>tubo intestinal primitivo</b>, dentro do corpo. Falha desse fechamento: defeitos de parede ventral (onfalocele, gastrosquise).']]},
+ {n:'Dobramento cefalocaudal (corte sagital)',L:[170,130],a:50,k:.021,
+  txt:[
+  ['Disco plano','Corte sagital (de lado). Cabeça à esquerda, cauda à direita. A <b>área cardiogênica</b> e a <b>membrana bucofaríngea</b> estão perto da ponta cefálica, e o coração fica à frente (cranial) da boca primitiva.'],
+  ['Cabeça e cauda crescem e se curvam','O tubo neural cresce rápido e as duas pontas se curvam para baixo (ventralmente). O coração é arrastado para baixo.'],
+  ['Coração desce','O coração passa para a face ventral, <b>abaixo</b> da futura boca. A parte do endoderma que ficou dentro vira o <b>intestino anterior</b> (cabeça) e o <b>posterior</b> (cauda).'],
+  ['Embrião em "C"','O corpo fica curvado. Intestino anterior, médio (ligado ao saco vitelino) e posterior. A membrana bucofaríngea marca a futura boca, e a cloacal, a saída do intestino posterior.']]}
+];
+let mi=0,si=0;
+const svg=document.getElementById('v');
+function curve(k,L,a,sg,o){const pts=[];let x=0,y=0,al=0;for(let s=0;s<=L;s+=3){if(s>a)al-=k*3;x+=Math.cos(al)*3;y+=Math.sin(al)*3;pts.push([sg*(x-o*Math.sin(al)),y+o*Math.cos(al),s,al,sg*x,y]);}return pts}
+function pos(k,L,a,sg,s,o){const c=curve(k,L,a,sg,o);const p=c[Math.min(c.length-1,Math.round(s/3))];return p}
+function line(k,L,a,o){const l=curve(k,L[0],a,-1,o).reverse(),r=curve(k,L[1],a,1,o);return l.concat(r)}
+const CX=380,CY=140;
+const P=p=>`${(CX+p[0]).toFixed(1)},${(CY-p[1]).toFixed(1)}`;
+function draw(){
+ const m=modes[mi],t=si/3,k=m.k*t,L=m.L,a=m.a;let o='';
+ const top=line(k,L,a,0).map(P),mb1=line(k,L,a,-4).map(P),mb2=line(k,L,a,-34).map(P).reverse(),en=line(k,L,a,-38).map(P);
+ o+=`<polygon points="${mb1.join(' ')} ${mb2.join(' ')}" fill="${cMl}" stroke="${cM}" stroke-width="1"/>`;
+ o+=`<polyline points="${top.join(' ')}" fill="none" stroke="${cE}" stroke-width="7" stroke-linecap="round"/>`;
+ o+=`<polyline points="${en.join(' ')}" fill="none" stroke="${cEn}" stroke-width="7" stroke-linecap="round"/>`;
+ const lat=mi==0;
+ if(lat){
+  o+=`<ellipse cx="${CX}" cy="${CY+12}" rx="13" ry="10" fill="${cN}"/><ellipse cx="${CX}" cy="${CY+12}" rx="5" ry="4" fill="var(--bg)"/>`;
+  o+=`<circle cx="${CX}" cy="${CY+26}" r="5" fill="${cNo}"/>`;
+  for(const sg of [-1,1]){const p=pos(k,190,a,sg,32,-18);o+=`<rect x="${CX+p[0]-10}" y="${CY-p[1]-13}" width="20" height="26" rx="6" fill="${cM}" transform="rotate(${(-p[3]*180/Math.PI*sg).toFixed(0)} ${CX+p[0]} ${CY-p[1]})"/>`}
+  o+=`<text x="${CX}" y="${CY-22}" text-anchor="middle" font-size="12">dorso (costas)</text>`;
+  o+=`<text x="${CX-18}" y="${CY+12}" font-size="10" text-anchor="end">tubo neural</text><text x="${CX-12}" y="${CY+30}" font-size="10" text-anchor="end">notocorda</text>`;
+  o+=`<text x="${CX+34}" y="${CY-10}" font-size="10" text-anchor="middle">somito</text>`;
+  const end=pos(k,190,a,1,190,-19);
+  if(si>=3)o+=`<text x="${CX}" y="${CY+112}" text-anchor="middle" font-size="12">anel umbilical (ventre)</text>`;
+  if(si>=2)o+=`<text x="${CX}" y="${CY+80}" text-anchor="middle" font-size="12">intestino primitivo</text>`;
+  if(si<=1)o+=`<text x="${CX}" y="${CY+60}" text-anchor="middle" font-size="12">endoderma (futuro intestino)</text>`;
+ }else{
+  // sagital: tubo neural dorsal, notocorda, coração, membranas
+  const nt=line(k,L,a,-11).map(P);
+  o+=`<polyline points="${nt.join(' ')}" fill="none" stroke="${cN}" stroke-width="8" opacity=".9" stroke-linecap="round"/>`;
+  const nc=line(k,L,a,-24).map(P);
+  o+=`<polyline points="${nc.join(' ')}" fill="none" stroke="${cNo}" stroke-width="4" stroke-linecap="round"/>`;
+  const h=pos(k,L[0],a,-1,150,-18);
+  o+=`<circle cx="${CX+h[0]}" cy="${CY-h[1]}" r="11" fill="#c0392b" stroke="#fff"/><text x="${CX+h[0]-16}" y="${CY-h[1]-16}" font-size="12" text-anchor="end">coração</text>`;
+  const b=pos(k,L[0],a,-1,130,0),b2=pos(k,L[0],a,-1,130,-38);
+  o+=`<line x1="${CX+b[0]}" y1="${CY-b[1]}" x2="${CX+b2[0]}" y2="${CY-b2[1]}" stroke="#000" stroke-width="3"/><text x="${CX+b[0]-28}" y="${CY-b[1]+(si>=2?52:-14)}" font-size="11" text-anchor="${si>=2?'start':'end'}">memb. bucofaríngea</text>`;
+  const c=pos(k,L[1],a,1,110,0),c2=pos(k,L[1],a,1,110,-38);
+  o+=`<line x1="${CX+c[0]}" y1="${CY-c[1]}" x2="${CX+c2[0]}" y2="${CY-c2[1]}" stroke="#000" stroke-width="3"/><text x="${CX+c[0]+8}" y="${CY-c[1]-12}" font-size="11">memb. cloacal</text>`;
+  o+=`<text x="${CX-L[0]*Math.cos(0)*(1-t*.55)-20}" y="${CY-26}" font-size="13" font-weight="bold" text-anchor="middle">CABEÇA</text>`;
+  o+=`<text x="${CX+L[1]*(1-t*.55)+10}" y="${CY-26}" font-size="13" font-weight="bold" text-anchor="middle">CAUDA</text>`;
+  o+=`<ellipse cx="${CX}" cy="${CY+(si>=2?95:70)}" rx="${si>=2?50:90}" ry="${si>=2?26:20}" fill="${cEn}" opacity=".35" stroke="${cEn}"/><text x="${CX}" y="${CY+(si>=2?100:75)}" text-anchor="middle" font-size="12">saco vitelino</text>`;
+  o+=`<text x="${CX}" y="${CY+(si>=2?58:44)}" text-anchor="middle" font-size="12">${si>=2?'intestino médio':''}</text>`;
+ }
+ svg.innerHTML=`<g transform="translate(380 150) scale(1.5) translate(-380 -140)">${o}</g>`;
+ document.getElementById('info').innerHTML=`<b>${si+1}. ${m.txt[si][0]}</b><br>${m.txt[si][1]}`;
+ document.querySelectorAll('#modes button').forEach((b,i)=>b.setAttribute('aria-pressed',i==mi));
+ document.querySelectorAll('#st button').forEach((b,i)=>b.setAttribute('aria-pressed',i==si));
+}
+function build(){
+ const M=document.getElementById('modes');modes.forEach((m,i)=>{const b=document.createElement('button');b.textContent=m.n;b.onclick=()=>{mi=i;si=0;draw()};M.appendChild(b)});
+ const S=document.getElementById('st');['1','2','3','4'].forEach((x,i)=>{const b=document.createElement('button');b.textContent='Estágio '+x;b.onclick=()=>{si=i;draw()};S.appendChild(b)});
+}
+build();draw();
+</script></body></html>
