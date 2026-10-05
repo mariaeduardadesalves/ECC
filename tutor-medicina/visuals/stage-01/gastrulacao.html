@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gastrulação passo a passo</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:900px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+.tabs button,.steps button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+.tabs button[aria-pressed=true],.steps button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+.row{display:grid;grid-template-columns:1fr 1.5fr;gap:10px} @media(max-width:700px){.row{grid-template-columns:1fr}}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+svg text:not([fill="#000"]){paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:10px} td,th{border:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top}
+.hide{display:none} small{color:var(--mut)}
+</style></head><body>
+<h1>Gastrulação (3ª semana)</h1>
+<div class="tabs"><button id="t1" aria-pressed="true">Passo a passo</button><button id="t2" aria-pressed="false">Derivados dos folhetos</button></div>
+
+<section id="p1">
+<p>Clique nos passos, na ordem. À esquerda: o disco <b>visto de cima</b>. À direita: um <b>corte transversal</b> na altura da linha primitiva.</p>
+<div class="steps" id="st"></div>
+<div class="row"><svg id="a" viewBox="0 0 340 320" role="img" aria-label="Disco visto de cima"></svg><svg id="b" viewBox="0 0 560 320" role="img" aria-label="Corte transversal do disco"></svg></div>
+<div id="info"></div>
+</section>
+
+<section id="p2" class="hide">
+<p>O que cada folheto origina (os do seu roteiro estão em <b>negrito</b>):</p>
+<table>
+<tr><th style="background:#aed6f1;color:#000">ECTODERMA</th><th style="background:#f5b7b1;color:#000">MESODERMA</th><th style="background:#f9e79f;color:#000">ENDODERMA</th></tr>
+<tr><td><b>Sistema nervoso</b> (tubo neural e crista neural)<br><b>Epiderme</b> e anexos (pelos, unhas, glândulas)<br>Olho (cristalino), orelha interna<br>Esmalte dos dentes</td>
+<td><b>Paraxial</b> (somitos): <b>esqueleto axial</b>, <b>músculo esquelético</b>, <b>derme</b><br><b>Intermediário</b>: <b>sistema urogenital</b> (rins, gônadas)<br><b>Lateral</b>: <b>coração</b> e vasos, serosas, <b>músculo liso do intestino</b></td>
+<td><b>Revestimento do intestino</b> e do sistema respiratório (<b>epitélio dos pulmões</b>)<br>Fígado e pâncreas (parênquima)<br>Tireoide<br>Epitélio da bexiga</td></tr></table>
+<p><small>Truque: <b>ecto</b> = "fora" (pele e nervoso); <b>endo</b> = "dentro" (revestimento interno); <b>meso</b> = "meio" (músculo, osso, sangue, rim).</small></p>
+</section>
+
+<script>
+const S=[
+ ['1. Disco bilaminar (antes)','Há duas camadas: <b>epiblasto</b> (em cima) e <b>hipoblasto</b> (embaixo). Nada de órgãos ainda.'],
+ ['2. Linha primitiva','No começo da 3ª semana (dia ~15) surge, na superfície do epiblasto, uma faixa no meio, a <b>linha primitiva</b>. Na ponta cranial há o <b>nó primitivo</b> com a <b>fosseta primitiva</b>.'],
+ ['3. Migração','Células do epiblasto <b>proliferam e migram</b> em direção à linha primitiva (setas).'],
+ ['4. Invaginação: endoderma','As primeiras células <b>mergulham</b> pela linha primitiva e <b>empurram o hipoblasto</b>: formam o <b>endoderma</b>.'],
+ ['5. Mesoderma','As próximas células se espalham <b>entre</b> o epiblasto e o endoderma e formam o <b>mesoderma</b> (camada do meio).'],
+ ['6. Ectoderma e disco trilaminar','As células que <b>ficam na superfície</b> formam o <b>ectoderma</b>. Pronto: <b>disco trilaminar</b> (3 folhetos).'],
+ ['7. Notocorda','Do <b>nó primitivo</b> sai um cordão para a ponta cranial, a <b>notocorda</b>. Ela <b>induz</b> o ectoderma acima a formar o <b>sistema nervoso</b> (próxima etapa: neurulação).']];
+const cEpi='#e59866',cHip='#7fb3d5',cEnd='#f4d03f',cMes='#e74c3c',cEct='#5dade2',cNot='#27ae60';
+function viewTop(i){let o=`<ellipse cx="170" cy="160" rx="115" ry="140" fill="${i>=5?cEct:cEpi}" stroke="#555" stroke-width="2"/>`;
+ o+=`<text x="170" y="16" text-anchor="middle" font-size="12" fill="currentColor">cranial (cabeça)</text><text x="170" y="316" text-anchor="middle" font-size="12" fill="currentColor">caudal</text>`;
+ if(i>=1){o+=`<line x1="170" y1="150" x2="170" y2="270" stroke="#7b241c" stroke-width="9" stroke-linecap="round"/><circle cx="170" cy="150" r="13" fill="#7b241c"/><circle cx="170" cy="150" r="4" fill="#fff"/><text x="190" y="140" font-size="12" fill="currentColor">nó primitivo</text><text x="190" y="215" font-size="12" fill="currentColor">linha primitiva</text>`}
+ if(i==2){[[-80,90],[-80,170],[-80,240],[80,90],[80,170],[80,240]].forEach(p=>{const x0=170+p[0],y=p[1]+(p[1]<150?60:0);o+=`<line x1="${x0}" y1="${y+20}" x2="${170+(p[0]<0?-18:18)}" y2="${Math.max(y+20,170)}" stroke="#000" stroke-width="2" marker-end="url(#ar)"/>`})}
+ if(i==6){o+=`<rect x="164" y="62" width="12" height="88" fill="${cNot}"/><ellipse cx="170" cy="58" rx="22" ry="8" fill="#fff" stroke="#555"/><text x="196" y="62" font-size="12" fill="currentColor">membrana bucofaríngea</text><text x="182" y="108" font-size="12" fill="currentColor">notocorda</text>`}
+ return `<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#000"/></marker></defs>`+o}
+function sec(i){const L=50,R=462,mid=256;let o='';
+ const topY=110,botY=215;
+ o+=`<defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#000"/></marker></defs>`;
+ // lower layer
+ const lowC=i>=3?cEnd:cHip,lowName=i>=3?'endoderma':'hipoblasto';
+ o+=`<rect x="${L}" y="${botY}" width="${R-L}" height="22" rx="6" fill="${lowC}" stroke="#555"/><text x="${R+6}" y="${botY+15}" font-size="12" fill="currentColor">${lowName}</text>`;
+ if(i==3)o+=`<rect x="${mid-60}" y="${botY}" width="120" height="22" fill="${cEnd}" stroke="#555"/>`;
+ // mesoderm
+ if(i>=4){const w=i==4?150:(R-L-40)/2;o+=`<rect x="${mid-w}" y="${topY+30}" width="${2*w}" height="${botY-topY-34}" rx="8" fill="${cMes}" opacity=".85" stroke="#7b241c"/><text x="${R+6}" y="${topY+62}" font-size="12" fill="currentColor">mesoderma</text>`;
+  if(i==4)o+=`<line x1="${mid+20}" y1="${topY+60}" x2="${mid+130}" y2="${topY+60}" stroke="#000" stroke-width="2" marker-end="url(#ar2)"/><line x1="${mid-20}" y1="${topY+60}" x2="${mid-130}" y2="${topY+60}" stroke="#000" stroke-width="2" marker-end="url(#ar2)"/>`}
+ // top layer with groove
+ const topC=i>=5?cEct:cEpi,topName=i>=5?'ectoderma':'epiblasto';
+ const g=i>=1?`L${mid-30},${topY} Q${mid},${topY+34} ${mid+30},${topY}`:'';
+ o+=`<path d="M${L},${topY} ${g} L${R},${topY} L${R},${topY+22} L${mid+30},${topY+22} ${i>=1?`Q${mid},${topY+56} ${mid-30},${topY+22}`:''} L${L},${topY+22} Z" fill="${topC}" stroke="#555"/><text x="${R+6}" y="${topY+15}" font-size="12" fill="currentColor">${topName}</text>`;
+ if(i>=1&&i<5)o+=`<text x="${mid}" y="${topY-12}" text-anchor="middle" font-size="12" fill="currentColor">linha primitiva (sulco)</text>`;
+ if(i==2){[[L+30],[L+110],[R-30],[R-110]].forEach(p=>{const dir=p[0]<mid?1:-1;o+=`<line x1="${p[0]}" y1="${topY-10}" x2="${p[0]+dir*50}" y2="${topY-10}" stroke="#000" stroke-width="2" marker-end="url(#ar2)"/>`})}
+ if(i==3){for(let k=0;k<4;k++)o+=`<circle cx="${mid-12+k*8}" cy="${topY+40+k*14}" r="6" fill="${cEnd}" stroke="#555"/>`;o+=`<line x1="${mid}" y1="${topY+8}" x2="${mid}" y2="${botY-6}" stroke="#000" stroke-width="2" marker-end="url(#ar2)"/><text x="${mid+34}" y="${topY+100}" font-size="12" fill="currentColor">células entrando</text>`}
+ if(i==6)o+=`<circle cx="${mid}" cy="${topY+60}" r="14" fill="${cNot}" stroke="#145a32" stroke-width="2"/><text x="${mid+22}" y="${topY+64}" font-size="12" fill="currentColor">notocorda</text>`;
+ return o}
+function setS(i){document.querySelectorAll('#st button').forEach((b,k)=>b.setAttribute('aria-pressed',k==i));
+ document.getElementById('a').innerHTML=viewTop(i);document.getElementById('b').innerHTML=sec(i);
+ document.getElementById('info').innerHTML=`<b>${S[i][0]}</b><br>${S[i][1]}`}
+const st=document.getElementById('st');S.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s[0].split('.')[0]+'. '+s[0].split('. ')[1].split(':')[0];b.onclick=()=>setS(i);st.appendChild(b)});setS(0);
+const t1=document.getElementById('t1'),t2=document.getElementById('t2');
+t1.onclick=()=>{p1.classList.remove('hide');p2.classList.add('hide');t1.setAttribute('aria-pressed',true);t2.setAttribute('aria-pressed',false)};
+t2.onclick=()=>{p2.classList.remove('hide');p1.classList.add('hide');t2.setAttribute('aria-pressed',true);t1.setAttribute('aria-pressed',false)};
+</script></body></html>
