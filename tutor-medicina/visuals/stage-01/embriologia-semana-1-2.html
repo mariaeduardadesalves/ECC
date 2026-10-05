@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Embriologia: dias 0 a 14</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc;--c1:#f5cba7;--c2:#aed6f1;--c3:#d5f5e3}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:820px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg text:not([fill="#000"]){paint-order:stroke;stroke:var(--bg);stroke-width:4px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px} small{color:var(--mut)}
+.where{display:inline-block;padding:2px 8px;border-radius:10px;background:var(--c3);color:#000;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:10px} td,th{border:1px solid var(--bd);padding:4px 6px;text-align:left}
+</style></head><body>
+<h1>Da fecundação à 2ª semana (dias 0 a 14)</h1>
+<p>Arraste o controle para ver o que acontece em cada dia (valores aproximados de livro-texto).</p>
+<svg id="s" viewBox="0 0 760 300" role="img" aria-label="Esquema do desenvolvimento nos dias 0 a 14"></svg>
+<input id="d" type="range" min="0" max="14" value="0" style="width:100%" aria-label="Dia do desenvolvimento">
+<div id="info"></div>
+<table><tr><th>Dia</th><th>Evento</th></tr>
+<tr><td>0–1</td><td>Fecundação (ampola) → zigoto</td></tr>
+<tr><td>1–2</td><td>Clivagem: 2 → 4 células (tuba)</td></tr>
+<tr><td>3</td><td>8–16 células, compactação; <b>mórula</b>; chega ao útero</td></tr>
+<tr><td>4–5</td><td>Cavidade (blastocele) → <b>blastocisto</b> (embrioblasto + trofoblasto)</td></tr>
+<tr><td>5–6</td><td>Perda da zona pelúcida (eclosão); aderência ao endométrio</td></tr>
+<tr><td>7</td><td>Início da implantação; sinciciotrofoblasto invade</td></tr>
+<tr><td>8</td><td><b>Disco bilaminar</b> (epiblasto + hipoblasto); cavidade amniótica</td></tr>
+<tr><td>9–12</td><td>Lacunas; implantação completa; mesoderma extraembrionário</td></tr>
+<tr><td>13–14</td><td>Saco vitelino secundário, cavidade coriônica, pedículo de conexão</td></tr></table>
+<script>
+const E=[
+['Dia 0','Fecundação','Ampola da tuba uterina','O espermatozoide fecunda o ovócito e se forma o <b>zigoto</b> (1 célula, 46 cromossomos).'],
+['Dia 1','Zigoto → primeira clivagem','Tuba uterina','Começam as <b>clivagens</b>: divisões por mitose sem aumento de tamanho. Surgem 2 células (<b>blastômeros</b>).'],
+['Dia 2','4 células','Tuba uterina','Clivagem continua; o embrião segue dentro da <b>zona pelúcida</b> e não aumenta de tamanho.'],
+['Dia 3','8 a 16 células · compactação','Tuba → útero','As células se juntam (<b>compactação</b>) e já se distinguem células <b>externas</b> e <b>internas</b>: primeira diferenciação. Forma-se a <b>mórula</b> e ela chega ao útero.'],
+['Dia 4','Mórula (12–32 células)','Cavidade do útero','Líquido do útero entra pela zona pelúcida e forma a cavidade (<b>blastocele</b>).'],
+['Dia 5','Blastocisto','Cavidade do útero','<b>Embrioblasto</b> (massa interna, dará o embrião) + <b>trofoblasto</b> (externo, dará a placenta) + blastocele. É o estágio da transferência na FIV.'],
+['Dia 6','Eclosão e aderência','Endométrio (fase secretora)','A <b>zona pelúcida desaparece</b> (eclosão) e o blastocisto adere ao endométrio. O trofoblasto se divide em <b>citotrofoblasto</b> e <b>sinciciotrofoblasto</b>.'],
+['Dia 7','Início da implantação','Endométrio','O <b>sinciciotrofoblasto</b> invade o endométrio e começa a produzir <b>hCG</b>. O embrioblasto forma o <b>hipoblasto</b>.'],
+['Dia 8','Disco bilaminar','Endométrio','Embrioblasto → <b>epiblasto + hipoblasto</b> (disco bilaminar). Surge a <b>cavidade amniótica</b> (amnioblastos).'],
+['Dia 9','Lacunas','Endométrio','Aparecem <b>lacunas</b> no sinciciotrofoblasto; começa o <b>saco vitelino primário</b>.'],
+['Dia 10','Embutido no endométrio','Endométrio','O blastocisto fica quase todo dentro do endométrio. Surge o <b>mesoderma extraembrionário</b>.'],
+['Dia 11','Implantação completa','Endométrio','Superfície do endométrio fecha-se; podem ocorrer pequenos <b>sangramentos de nidação</b>, perto do dia da menstruação esperada.'],
+['Dia 12','Circulação uteroplacentária primitiva','Endométrio','As lacunas se ligam a vasos maternos: começa a troca de nutrientes.'],
+['Dia 13','Saco vitelino secundário','Endométrio','Forma-se a <b>cavidade coriônica</b> (celoma extraembrionário) e o <b>pedículo de conexão</b> (futuro cordão umbilical).'],
+['Dia 14','Fim da 2ª semana','Endométrio','Disco bilaminar bem formado, com a <b>placa pré-cordal</b> (futura boca). O embrião ainda não tem órgãos.']];
+function cell(x,y,r,f){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${f||'#f5b7b1'}" stroke="#922" stroke-width="1.5"/>`}
+function draw(d){let o='',cx=380,cy=130;
+ const endo=d>=6?`<rect x="60" y="215" width="640" height="60" rx="8" fill="#f9e79f"/><text x="80" y="250" font-size="13" fill="#000">Endométrio</text>`:'';
+ o+=endo;
+ if(d==0)o+=cell(cx,cy,48)+`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="12" fill="#000">zigoto</text>`;
+ else if(d==1)o+=cell(cx-34,cy,34)+cell(cx+34,cy,34);
+ else if(d==2){[[-34,-34],[34,-34],[-34,34],[34,34]].forEach(p=>o+=cell(cx+p[0],cy+p[1],32))}
+ else if(d==3){for(let i=0;i<14;i++){const a=i*2.4,r=18+((i*7)%30);o+=cell(cx+Math.cos(a)*r*1.4,cy+Math.sin(a)*r,19)}}
+ else if(d==4){for(let i=0;i<24;i++){const a=i*2.4,r=12+((i*11)%44);o+=cell(cx+Math.cos(a)*r*1.5,cy+Math.sin(a)*r,15)}}
+ else if(d>=5&&d<=6){const yy=d==6?170:130;o+=`<circle cx="${cx}" cy="${yy}" r="64" fill="#d6eaf8" stroke="#922" stroke-width="7"/>`;for(let i=0;i<6;i++)o+=cell(cx-30+i%3*14,yy-30+Math.floor(i/3)*14,8);
+  o+=`<text x="${cx+90}" y="${yy-30}" font-size="13" fill="currentColor">trofoblasto (parede)</text><text x="${cx-250}" y="${yy-30}" font-size="13" fill="currentColor">embrioblasto (massa interna)</text><text x="${cx}" y="${yy+30}" text-anchor="middle" font-size="12" fill="#000">blastocele</text>`;
+  if(d==5)o+=`<circle cx="${cx}" cy="${yy}" r="74" fill="none" stroke="#999" stroke-dasharray="4"/><text x="${cx+85}" y="${yy+60}" font-size="12" fill="currentColor">zona pelúcida</text>`}
+ else if(d>=7&&d<=12){const yy=215+Math.min(d-6,5)*3;o+=`<ellipse cx="${cx}" cy="${yy-35}" rx="70" ry="55" fill="#d6eaf8" stroke="#922" stroke-width="6"/>`;
+  if(d>=8)o+=`<rect x="${cx-34}" y="${yy-48}" width="68" height="9" fill="#e74c3c"/><rect x="${cx-34}" y="${yy-39}" width="68" height="9" fill="#2e86c1"/><text x="${cx+85}" y="${yy-55}" font-size="12" fill="currentColor">epiblasto</text><text x="${cx+85}" y="${yy-35}" font-size="12" fill="currentColor">hipoblasto</text><ellipse cx="${cx}" cy="${yy-68}" rx="26" ry="9" fill="#fff" stroke="#555"/><text x="${cx-90}" y="${yy-72}" text-anchor="end" font-size="12" fill="currentColor">cavidade amniótica</text>`;
+  else o+=`<text x="${cx}" y="${yy-30}" text-anchor="middle" font-size="12" fill="#000">hipoblasto + embrioblasto</text>`;
+  o+=`<text x="${cx+85}" y="${yy-5}" font-size="12" fill="currentColor">sinciciotrofoblasto invadindo</text>`}
+ else if(d>=13){o+=`<ellipse cx="${cx}" cy="150" rx="120" ry="75" fill="#eaf2f8" stroke="#922" stroke-width="5"/><rect x="${cx-34}" y="143" width="68" height="9" fill="#e74c3c"/><rect x="${cx-34}" y="152" width="68" height="9" fill="#2e86c1"/><ellipse cx="${cx}" cy="124" rx="26" ry="9" fill="#fff" stroke="#555"/><ellipse cx="${cx}" cy="184" rx="26" ry="11" fill="#f7dc6f" stroke="#555"/><text x="${cx+135}" y="128" font-size="12" fill="currentColor">cavidade amniótica</text><text x="${cx+135}" y="190" font-size="12" fill="currentColor">saco vitelino secundário</text><text x="${cx-130}" y="150" text-anchor="end" font-size="12" fill="currentColor">cavidade coriônica</text><path d="M${cx+95} 110 L${cx+140} 85" stroke="#555" stroke-width="3"/><text x="${cx+145}" y="85" font-size="12" fill="currentColor">pedículo de conexão</text>`}
+ o+=`<text x="20" y="24" font-size="15" font-weight="600" fill="currentColor">${E[d][0]} · ${E[d][1]}</text>`;
+ document.getElementById('s').innerHTML=o;
+ document.getElementById('info').innerHTML=`<span class="where">${E[d][2]}</span><br>${E[d][3]}`}
+const sl=document.getElementById('d');sl.oninput=()=>draw(+sl.value);draw(0);
+</script></body></html>
