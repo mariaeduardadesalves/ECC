@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulado P1 Morfofuncional</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc;--ok:#1e8449;--no:#c0392b;--card:#f7f9fb}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444;--card:#1f2428}}
+@media print{.noprint{display:none!important}.q{break-inside:avoid}}
+body{font-family:Georgia,serif;max-width:860px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg);line-height:1.45}
+h1{font-size:22px;margin-bottom:4px} h2{font-size:18px;border-bottom:2px solid var(--bd);padding-bottom:4px;margin-top:32px}
+.hdr{display:grid;grid-template-columns:1fr 160px;gap:10px;margin:10px 0}
+input[type=text]{width:100%;padding:6px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;box-sizing:border-box}
+.q{border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:14px 0;background:var(--card)}
+.q b.n{display:inline-block;min-width:2em}
+.opt{display:block;margin:6px 0;padding:6px 8px;border-radius:6px;cursor:pointer}
+.opt:hover{background:rgba(36,113,163,.1)}
+.opt input{margin-right:8px}
+.ok{outline:2px solid var(--ok);background:rgba(30,132,73,.12)}
+.no{outline:2px solid var(--no);background:rgba(192,57,43,.12)}
+.exp{margin-top:8px;padding:8px;border-left:4px solid var(--ok);background:rgba(30,132,73,.08);display:none;font-size:15px}
+.fig{margin:10px 0;text-align:center} .fig svg{max-width:100%;height:auto;border:1px solid var(--bd);border-radius:6px;background:#fff}
+.fig figcaption{font-size:13px;color:var(--mut)}
+button{font:inherit;padding:8px 14px;border:1px solid #2471a3;border-radius:8px;background:#2471a3;color:#fff;cursor:pointer;margin:4px 4px 4px 0}
+button.sec{background:var(--bg);color:var(--fg);border-color:var(--bd)}
+textarea{width:100%;min-height:110px;padding:8px;border:1px solid var(--bd);border-radius:6px;font:inherit;background:var(--bg);color:var(--fg);box-sizing:border-box}
+#score{font-size:18px;font-weight:bold;margin:10px 0}
+.model{display:none;margin-top:8px;padding:8px;border-left:4px solid #2471a3;background:rgba(36,113,163,.08);font-size:15px}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Simulado P1: Morfofuncional I</h1>
+<small>40 questões fechadas (múltipla escolha) + 8 abertas · Marque as respostas, clique em “Corrigir” no fim. Suas respostas ficam salvas neste navegador.</small>
+<div class="hdr"><div>Nome: <input type="text" id="nome" placeholder="Seu nome"></div><div>Data: <input type="text" id="data" value="06/10/2026"></div></div>
+<div class="noprint"><button class="sec" onclick="window.print()">Imprimir / salvar PDF</button></div>
+<h2>Parte 1: 40 questões fechadas</h2>
+<div id="closed"></div>
+<div class="noprint"><button onclick="grade()">Corrigir prova (fechadas)</button><button class="sec" onclick="resetAll()">Limpar tudo</button></div>
+<div id="score"></div>
+<h2>Parte 2: 8 questões abertas</h2>
+<small>Responda com suas palavras. Depois clique em “Ver resposta-modelo” e compare com os tópicos esperados.</small>
+<div id="open"></div>
+<script>
+/* ============ FIGURAS ============ */
+const S=(w,h,inner)=>`<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="13">${inner}</svg>`;
+const T=(x,y,s,a='middle',c='#111',sz=13,w='normal')=>`<text x="${x}" y="${y}" text-anchor="${a}" fill="${c}" font-size="${sz}" font-weight="${w}">${s}</text>`;
+const num=(x,y,n)=>`<circle cx="${x}" cy="${y}" r="11" fill="#fff" stroke="#111" stroke-width="1.5"/>${T(x,y+4,n,'middle','#111',13,'bold')}`;
+
+function figSarc(){let o='';
+ o+=`<line x1="100" y1="40" x2="100" y2="190" stroke="#000" stroke-width="4"/><line x1="500" y1="40" x2="500" y2="190" stroke="#000" stroke-width="4"/>`;
+ [60,95,130,165].forEach((y,i)=>{o+=`<line x1="100" y1="${y}" x2="260" y2="${y}" stroke="#2e86c1" stroke-width="4"/><line x1="340" y1="${y}" x2="500" y2="${y}" stroke="#2e86c1" stroke-width="4"/>`});
+ [77,112,147].forEach(y=>{o+=`<line x1="180" y1="${y}" x2="420" y2="${y}" stroke="#c0392b" stroke-width="9"/>`});
+ const br=(x1,x2,y,l)=>`<path d="M${x1},${y} v8 H${x2} v-8" fill="none" stroke="#111" stroke-width="1.5"/>${T((x1+x2)/2,y+26,l,'middle','#111',16,'bold')}`;
+ o+=br(100,500,205,'P')+br(180,420,240,'Q')+br(100,180,275,'R')+br(260,340,310,'S');
+ o+=T(300,24,'Esquema de um sarcômero em repouso (linhas pretas = linhas Z)','middle','#111',13);
+ return S(600,345,o)}
+
+function figMusc(){let o='';
+ // I
+ o+=T(110,20,'I','middle','#111',16,'bold');
+ o+=`<rect x="10" y="40" width="200" height="40" fill="#f5b7b1" stroke="#7b241c"/><rect x="10" y="95" width="200" height="40" fill="#f5b7b1" stroke="#7b241c"/>`;
+ for(let x=20;x<210;x+=10){o+=`<line x1="${x}" y1="42" x2="${x}" y2="78" stroke="#a93226"/><line x1="${x}" y1="97" x2="${x}" y2="133" stroke="#a93226"/>`}
+ [[40,44],[90,76],[150,45],[185,76],[60,100],[120,131],[170,100]].forEach(p=>o+=`<ellipse cx="${p[0]}" cy="${p[1]}" rx="9" ry="4" fill="#4a235a"/>`);
+ // II
+ const ox=240;o+=T(ox+110,20,'II','middle','#111',16,'bold');
+ o+=`<path d="M${ox},45 L${ox+90},45 L${ox+110},75 L${ox+210},60 L${ox+210},100 L${ox+110},105 L${ox+90},135 L${ox},135 Z" fill="#f5b7b1" stroke="#7b241c"/>`;
+ for(let x=ox+8;x<ox+90;x+=10)o+=`<line x1="${x}" y1="47" x2="${x}" y2="133" stroke="#a93226" stroke-width=".8"/>`;
+ for(let x=ox+120;x<ox+206;x+=10)o+=`<line x1="${x}" y1="62" x2="${x}" y2="103" stroke="#a93226" stroke-width=".8"/>`;
+ o+=`<line x1="${ox+95}" y1="50" x2="${ox+95}" y2="130" stroke="#111" stroke-width="4"/><line x1="${ox+200}" y1="60" x2="${ox+200}" y2="100" stroke="#111" stroke-width="4" opacity=".6"/>`;
+ o+=`<ellipse cx="${ox+45}" cy="90" rx="12" ry="7" fill="#4a235a"/><ellipse cx="${ox+155}" cy="82" rx="12" ry="7" fill="#4a235a"/>`;
+ // III
+ const px=490;o+=T(px+120,20,'III','middle','#111',16,'bold');
+ [[px+10,50],[px+90,60],[px+40,100],[px+120,110]].forEach(p=>{o+=`<path d="M${p[0]},${p[1]+10} Q${p[0]+35},${p[1]-18} ${p[0]+90},${p[1]+10} Q${p[0]+35},${p[1]+38} ${p[0]},${p[1]+10} Z" fill="#f5b7b1" stroke="#7b241c"/><ellipse cx="${p[0]+45}" cy="${p[1]+10}" rx="9" ry="5" fill="#4a235a"/>`});
+ o+=T(400,170,'Esquemas de cortes longitudinais de três tipos de músculo (núcleos em roxo; linhas grossas escuras = junções entre células)','middle','#555',11);
+ return S(760,185,o)}
+
+function figChart(){let o='';
+ const X=d=>60+d*21.5,Y=v=>230-v*190;
+ o+=`<rect x="60" y="30" width="602" height="200" fill="#fff" stroke="#999"/>`;
+ for(let d=0;d<=28;d+=7)o+=`<line x1="${X(d)}" y1="230" x2="${X(d)}" y2="236" stroke="#555"/>${T(X(d),250,'dia '+d,'middle','#333',11)}`;
+ const pl=(pts,c,w=3)=>`<polyline points="${pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round"/>`;
+ const lh=[[1,.1],[10,.12],[12,.2],[13,.55],[14,1],[15,.45],[16,.15],[22,.1],[28,.08]];
+ const prog=[[1,.03],[13,.05],[15,.12],[18,.45],[21,.8],[24,.55],[27,.15],[28,.08]];
+ const est=[[1,.1],[6,.2],[10,.5],[13,.85],[15,.5],[17,.3],[21,.55],[25,.3],[28,.1]];
+ const fsh=[[1,.4],[5,.45],[9,.25],[12,.2],[14,.5],[16,.2],[22,.12],[28,.15]];
+ o+=pl(lh,'#8e44ad')+pl(prog,'#d35400')+pl(est,'#2e86c1')+pl(fsh,'#27ae60');
+ o+=num(X(14)+22,Y(1)+6,'1')+num(X(21),Y(.8)-18,'2')+num(X(13)-22,Y(.85)+2,'3')+num(X(5),Y(.45)-16,'4');
+ o+=T(360,22,'Variação hormonal ao longo de um ciclo de 28 dias (ovulação por volta do dia 14)','middle','#111',13);
+ o+=T(18,130,'nível','middle','#555',11);
+ return S(700,262,o)}
+
+function figBilam(){let o='';
+ o+=`<ellipse cx="260" cy="70" rx="130" ry="42" fill="#d6eaf8" stroke="#2874a6"/>`;
+ o+=`<rect x="130" y="112" width="260" height="18" fill="#85c1e9" stroke="#2874a6"/>`;
+ for(let x=134;x<390;x+=16)o+=`<ellipse cx="${x+6}" cy="121" rx="6" ry="8" fill="#5dade2"/>`;
+ o+=`<rect x="130" y="130" width="260" height="12" fill="#f9e79f" stroke="#b7950b"/>`;
+ o+=`<ellipse cx="260" cy="205" rx="145" ry="55" fill="#fcf3cf" stroke="#b7950b" stroke-dasharray="4 3"/>`;
+ o+=`<path d="M105,70 q-35,5 -35,50 v40" fill="none" stroke="#7d3c98" stroke-width="12"/>`;
+ o+=`<line x1="388" y1="121" x2="418" y2="104" stroke="#111"/><line x1="388" y1="136" x2="418" y2="158" stroke="#111"/>`+num(260,70,'1')+num(430,100,'2')+num(430,162,'3')+num(260,210,'4')+num(55,110,'5');
+ o+=T(260,18,'Embrião no 8º dia de desenvolvimento, corte (esquema)','middle','#111',13);
+ return S(520,280,o)}
+
+function figNeural(){let o='';
+ o+=`<path d="M20,150 H135" fill="none" stroke="#5dade2" stroke-width="9" stroke-linecap="round"/><path d="M395,150 H510" fill="none" stroke="#5dade2" stroke-width="9" stroke-linecap="round"/>`;
+ o+=`<path d="M135,150 Q150,70 190,58 Q225,100 245,138 Q265,158 285,138 Q305,100 340,58 Q380,70 395,150" fill="none" stroke="#8e44ad" stroke-width="10" stroke-linecap="round"/>`;
+ o+=`<circle cx="190" cy="56" r="8" fill="#e67e22"/><circle cx="340" cy="56" r="8" fill="#e67e22"/>`;
+ o+=`<rect x="20" y="172" width="490" height="32" rx="8" fill="#f5b7b1" stroke="#c0392b"/><circle cx="265" cy="188" r="12" fill="#27ae60" stroke="#145a32" stroke-width="2"/>`;
+ o+=`<rect x="20" y="210" width="490" height="8" fill="#f4d03f"/>`;
+ o+=num(265,188,'1')+num(190,34,'2')+num(70,125,'3')+num(142,100,'4');
+ o+=T(265,240,'Corte transversal do embrião (3ª semana de desenvolvimento)','middle','#111',12);
+ return S(530,250,o)}
+
+function figHered(){let o='';
+ const sq=(x,y,f)=>`<rect x="${x-18}" y="${y-18}" width="36" height="36" fill="#fff" stroke="#111" stroke-width="2"/>${f=='full'?`<rect x="${x-18}" y="${y-18}" width="36" height="36" fill="#111"/>`:f=='half'?`<rect x="${x-18}" y="${y-18}" width="18" height="36" fill="#111"/>`:''}`;
+ const ci=(x,y,f)=>`<circle cx="${x}" cy="${y}" r="18" fill="#fff" stroke="#111" stroke-width="2"/>${f=='full'?`<circle cx="${x}" cy="${y}" r="18" fill="#111"/>`:f=='half'?`<path d="M${x},${y-18} A18,18 0 0 0 ${x},${y+18} Z" fill="#111"/>`:''}`;
+ o+=`<line x1="180" y1="60" x2="300" y2="60" stroke="#111" stroke-width="2"/><line x1="240" y1="60" x2="240" y2="130" stroke="#111" stroke-width="2"/><line x1="120" y1="130" x2="360" y2="130" stroke="#111" stroke-width="2"/>`;
+ [120,240,360].forEach(x=>o+=`<line x1="${x}" y1="130" x2="${x}" y2="150" stroke="#111" stroke-width="2"/>`);
+ o+=sq(160,60,'half')+ci(320,60,'half');
+ o+=ci(120,170,'full')+sq(240,170,'half')+ci(360,170,'none');
+ o+=T(120,22,'I-1','middle','#111',13)+T(320,22,'I-2','middle','#111',13)+T(120,214,'II-1','middle','#111',12)+T(240,214,'II-2','middle','#111',12)+T(360,214,'II-3','middle','#111',12);
+ o+=T(430,80,'■ ● preenchido: afetado','start','#111',12)+T(430,100,'metade preenchida: portador (traço)','start','#111',12)+T(430,120,'□ ○ vazio: sem o alelo','start','#111',12);
+ return S(640,230,o)}
+
+function figRX(){let o=`<rect width="360" height="300" fill="#0b0b0b"/>`;
+ o+=`<rect x="150" y="150" width="60" height="140" rx="8" fill="#bbb"/><rect x="140" y="150" width="80" height="14" fill="#d8d8d8"/>`;
+ o+=`<ellipse cx="180" cy="95" rx="55" ry="38" fill="#cfcfcf"/>`;
+ o+=`<rect x="125" y="128" width="110" height="5" fill="#111"/>`;
+ o+=`<path d="M160,180 L175,130 L205,95" fill="none" stroke="#111" stroke-width="4"/>`;
+ o+=`<path d="M300,128 L240,128" stroke="#f1c40f" stroke-width="3" marker-end="url(#ar)"/><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#f1c40f"/></marker></defs>`;
+ o+=`<text x="305" y="132" fill="#f1c40f" font-size="14" font-family="sans-serif">seta</text>`;
+ o+=`<text x="12" y="22" fill="#fff" font-size="12" font-family="sans-serif">RX de fêmur distal, criança de 8 anos (esquema)</text>`;
+ return S(360,300,o)}
+
+function figCT(){let o=`<rect width="360" height="320" fill="#000"/>`;
+ o+=`<ellipse cx="180" cy="165" rx="130" ry="145" fill="#ddd"/><ellipse cx="180" cy="165" rx="118" ry="133" fill="#777"/>`;
+ o+=`<ellipse cx="180" cy="165" rx="105" ry="120" fill="#8c8c8c"/>`;
+ o+=`<path d="M70,110 Q60,160 80,220 Q70,160 85,105 Z" fill="#e8e8e8"/><path d="M62,115 Q52,165 72,230" fill="none" stroke="#f2f2f2" stroke-width="10"/>`;
+ o+=`<path d="M155,150 Q180,120 205,150 Q195,185 180,185 Q165,185 155,150 Z" fill="#2a2a2a"/>`;
+ 
+ o+=`<text x="22" y="150" fill="#fff" font-size="13" font-family="sans-serif">A</text><line x1="38" y1="146" x2="56" y2="146" stroke="#fff"/>`;
+ o+=`<text x="218" y="170" fill="#fff" font-size="13" font-family="sans-serif">B</text>`;
+ o+=`<text x="12" y="20" fill="#fff" font-size="12" font-family="sans-serif">TC de crânio, janela de partes moles (esquema)</text>`;
+ o+=`<text x="12" y="312" fill="#fff" font-size="12" font-family="sans-serif">ROI A: +72 UH · ROI B: +6 UH</text>`;
+ return S(360,320,o)}
+
+function figArm(){let o='';
+ o+=`<rect width="360" height="300" fill="#fff"/>`;
+ o+=`<circle cx="150" cy="50" r="24" fill="#d5dbe0" stroke="#7f8c8d" stroke-width="2"/><rect x="120" y="80" width="60" height="120" rx="22" fill="#d5dbe0" stroke="#7f8c8d" stroke-width="2"/>`;
+ o+=`<line x1="150" y1="200" x2="145" y2="285" stroke="#7f8c8d" stroke-width="22" stroke-linecap="round"/>`;
+ o+=`<line x1="168" y1="100" x2="168" y2="165" stroke="#bbb" stroke-width="12" stroke-linecap="round" stroke-dasharray="4 4"/>`;
+ o+=`<line x1="168" y1="100" x2="290" y2="100" stroke="#2e86c1" stroke-width="12" stroke-linecap="round"/>`;
+ o+=`<path d="M200,162 A60,60 0 0 0 232,112" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ar2)"/><defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#c0392b"/></marker></defs>`;
+ o+=T(300,130,'M','middle','#c0392b',16,'bold')+T(240,22,'Vista de perfil (frente do corpo à direita)','middle','#555',12);
+ return S(360,300,o)}
+
+/* ============ QUESTÕES FECHADAS ============ */
+const Q=[
+{t:`Paciente de 58 anos, corredor amador, sente um estalo na região posterior do tornozelo durante uma corrida e passa a não conseguir ficar na ponta dos pés. A ultrassonografia mostra ruptura do tendão do calcâneo. A análise histológica de tendões normais revela feixes espessos e paralelos, com poucas células alongadas entre eles. Qual alternativa descreve corretamente o tecido e a principal fibra da sua matriz?`,
+ o:['Tecido conjuntivo frouxo; predomínio de colágeno tipo III.','Tecido conjuntivo denso não modelado; predomínio de fibras elásticas.','Tecido conjuntivo denso modelado; predomínio de colágeno tipo I.','Cartilagem fibrosa; predomínio de colágeno tipo II.'],a:2,
+ e:'Tendão é conjuntivo <b>denso modelado</b> (feixes paralelos, orientados), rico em <b>colágeno I</b>. Colágeno II é da cartilagem hialina; III, das fibras reticulares.'},
+{t:`Um estudante observa o esquema de um sarcômero (figura) e precisa explicar o que acontece durante a contração, segundo a teoria dos filamentos deslizantes: os filamentos finos de actina deslizam sobre os grossos de miosina, aproximando as linhas Z. Qual região indicada mantém o seu comprimento constante durante a contração?`,
+ f:figSarc,c:'Esquema de um sarcômero em repouso',
+ o:['Q (região dos filamentos grossos, banda A).','P (de uma linha Z à outra, o sarcômero inteiro).','R (região só com filamentos finos, junto à linha Z, banda I).','S (região central sem sobreposição, zona H).'],a:0,
+ e:'Os filamentos <b>não encurtam</b>: deslizam. Por isso a <b>banda A</b> (comprimento dos filamentos grossos) permanece constante; <b>banda I</b> e <b>zona H</b> diminuem, e o sarcômero (P) encurta.'},
+{t:`Em uma aula prática de histologia, o professor apresenta três esquemas de cortes longitudinais de tecido muscular. Ele pede que o estudante identifique aquele que corresponde ao músculo de contração involuntária, com células ramificadas, estriação transversal e junções que garantem a contração sincronizada das células.`,
+ f:figMusc,c:'Figura I, II e III',
+ o:['Apenas o I.','Apenas o III.','I e III.','Apenas o II.'],a:3,
+ e:'O <b>cardíaco</b> tem células ramificadas, estriação, 1–2 núcleos centrais e <b>discos intercalares</b> (II). I = esquelético (vários núcleos periféricos); III = liso (sem estriação).'},
+{t:`Um paciente vítima de esmagamento do antebraço apresenta lesão da bainha de tecido conjuntivo que envolve <b>cada fascículo</b> do músculo, enquanto a que envolve cada fibra isolada e a que envolve o músculo inteiro permaneceram íntegras. Qual camada foi lesada?`,
+ o:['Endomísio.','Epimísio.','Perimísio.','Tecido adiposo subcutâneo.'],a:2,
+ e:'<b>Endomísio</b> envolve cada fibra; <b>perimísio</b> envolve o fascículo; <b>epimísio</b> envolve o músculo inteiro.'},
+{t:`Os espermatozoides produzidos nos túbulos seminíferos precisam percorrer um longo trajeto até serem ejaculados. Assinale a sequência correta das estruturas percorridas até o ducto deferente.`,
+ o:['Túbulos seminíferos → epidídimo → rede testicular → ductos eferentes → ducto deferente.','Túbulos seminíferos → ductos eferentes → túbulos retos → epidídimo → ducto deferente.','Rede testicular → túbulos seminíferos → túbulos retos → ductos eferentes → ducto deferente.','Túbulos seminíferos → túbulos retos → rede testicular → ductos eferentes → epidídimo → ducto deferente.'],a:3,
+ e:'Seminíferos → <b>túbulos retos</b> → <b>rede testicular</b> → <b>ductos eferentes</b> → <b>epidídimo</b> → deferente → ejaculatório → uretra.'},
+{t:`Lactente de 8 meses é levado à consulta porque a mãe nota ausência dos dois testículos na bolsa escrotal. O exame mostra testículos palpáveis no canal inguinal, bilateralmente. A mãe pergunta se o problema pode afetar a fertilidade do filho no futuro. Considerando a fisiologia testicular, qual a resposta mais adequada?`,
+ o:['Não, pois a temperatura mais alta aumenta a produção de testosterona e compensa a posição.','Sim, pois a temperatura mais alta que a escrotal prejudica a espermatogênese, com risco de infertilidade se não houver correção.','Não, pois o FSH hipofisário garante a espermatogênese independentemente da temperatura.','Sim, pois a criptorquidia bilateral causa ausência de células de Leydig desde o nascimento.'],a:1,
+ e:'A espermatogênese exige temperatura ~2–3 °C <b>abaixo</b> da corporal. Criptorquidia bilateral não corrigida → risco de oligo/azoospermia e infertilidade.'},
+{t:`Adolescente de 17 anos queixa-se de peso no testículo esquerdo ao final do dia. Em pé, o médico palpa uma massa com aspecto de "saco de vermes" no escroto esquerdo, que diminui quando o paciente deita. O espermograma mostra oligozoospermia. Qual estrutura e qual mecanismo explicam a alteração de fertilidade?`,
+ o:['Plexo pampiniforme dilatado, com perda do resfriamento do sangue arterial por contracorrente e elevação da temperatura testicular.','Obstrução do epidídimo, com impedimento da maturação dos espermatozoides.','Hipertrofia prostática, com compressão da uretra e refluxo de sêmen.','Secção do ducto deferente, com bloqueio do trânsito dos espermatozoides.'],a:0,
+ e:'<b>Varicocele</b>: dilatação do <b>plexo pampiniforme</b> (veias). Ele resfria o sangue arterial por troca de calor; dilatado, perde essa função → ↑ temperatura → ↓ espermatogênese.'},
+{t:`Sobre a espermatogênese, considere a sequência: espermatogônia (2n) → espermatócito primário (2n) → <b>X</b> → espermátides (n) → espermatozoides. A célula X, resultante da primeira divisão meiótica, é:`,
+ o:['Espermatogônia tipo B.','Espermatócito primário duplicado.','Espermatócito secundário, haploide (n), com cromossomos ainda formados por duas cromátides.','Espermatozoide imaturo diploide.'],a:2,
+ e:'A 1ª divisão meiótica (reducional) forma o <b>espermatócito secundário</b> (n). A 2ª divisão (equacional) forma as espermátides.'},
+{t:`Para a síntese de estradiol no folículo ovariano, é correto afirmar que:`,
+ o:['O LH estimula a granulosa a produzir androgênios, que são convertidos em estradiol pela teca.','O FSH estimula a teca a produzir androgênios, que se difundem para a granulosa e são convertidos em estradiol pelo LH.','O LH estimula a aromatase da granulosa a produzir androgênios a partir do colesterol.','O LH estimula a teca a produzir androgênios, que se difundem para a granulosa, onde a aromatase, estimulada pelo FSH, os converte em estradiol.'],a:3,
+ e:'Modelo das <b>duas células</b>: LH → teca → androgênios; FSH → granulosa → aromatase → estradiol.'},
+{t:`A figura mostra a variação hormonal ao longo de um ciclo menstrual de 28 dias. Uma estudante precisa identificar (i) o hormônio produzido principalmente pelo corpo lúteo e (ii) o hormônio cujo pico desencadeia a ovulação. As curvas correspondentes são, respectivamente:`,
+ f:figChart,c:'Curvas 1, 2, 3 e 4',
+ o:['3 e 1.','2 e 1.','4 e 3.','2 e 4.'],a:1,
+ e:'Curva 2 = <b>progesterona</b> (pico na fase lútea, corpo lúteo). Curva 1 = <b>LH</b> (pico agudo ~dia 14 = ovulação). 3 = estrogênio; 4 = FSH.'},
+{t:`Mulher de 28 anos, com ciclos de 28 dias, faz biópsia endometrial no 22º dia do ciclo. O laudo descreve glândulas tortuosas, com secreção em seu interior, e estroma edemaciado. Qual o hormônio predominante nessa fase e qual a sua principal origem?`,
+ o:['Estrogênio, produzido pelo folículo dominante.','FSH, produzido pela adeno-hipófise.','Progesterona, produzida pelo corpo lúteo.','LH, produzido pela neuro-hipófise.'],a:2,
+ e:'Fase <b>secretora/lútea</b>: progesterona do <b>corpo lúteo</b> prepara o endométrio para implantação.'},
+{t:`Mulher de 24 anos, IMC 31, com oligomenorreia, hirsutismo e acantose nigricans. Exames: β-hCG negativo, testosterona total elevada, LH elevado e FSH normal-baixo (relação LH/FSH aumentada). Qual alternativa explica corretamente o ciclo anovulatório da paciente?`,
+ o:['Não há desenvolvimento de folículo dominante nem pico de LH; sem ovulação, não se forma corpo lúteo e a progesterona fica baixa.','Há excesso de progesterona inibindo a liberação de LH e a ovulação.','A hipófise não produz LH, o que impede o desenvolvimento folicular.','A ovulação ocorre normalmente, mas o endométrio não responde ao estrogênio.'],a:0,
+ e:'Na <b>SOP</b>: LH alto e “plano”, hiperandrogenismo, folículos que não amadurecem, sem pico de LH → anovulação → sem corpo lúteo → progesterona baixa. Resistência à insulina agrava o hiperandrogenismo.'},
+{t:`Mulher de 26 anos, ciclos regulares, está com atraso menstrual de 5 dias e o teste de gravidez urinário é positivo. Qual a origem do hormônio detectado e a sua principal função no início da gestação?`,
+ o:['Corpo lúteo; estimular a ovulação seguinte.','Sinciciotrofoblasto; manter o corpo lúteo produzindo progesterona.','Hipófise anterior; estimular a produção de leite.','Citotrofoblasto; formar o cordão umbilical.'],a:1,
+ e:'O <b>β-hCG</b> vem do <b>sinciciotrofoblasto</b> e “resgata” o corpo lúteo, mantendo progesterona até a placenta assumir.'},
+{t:`Uma paciente usa contraceptivo oral combinado (estrogênio + progestágeno). Qual é o mecanismo principal de ação desse método?`,
+ o:['Feedback negativo sobre o eixo hipotálamo-hipófise-ovário, inibindo FSH/LH e, portanto, a ovulação.','Destruição dos espermatozoides na vagina por alteração do pH.','Obstrução mecânica das tubas uterinas.','Inflamação do endométrio que impede a implantação, como mecanismo principal.'],a:0,
+ e:'A pílula combinada <b>suprime a ovulação</b> (feedback negativo sobre GnRH/FSH/LH). Outros efeitos (muco, endométrio) são secundários.'},
+{t:`O primeiro dia da última menstruação (DUM) de uma gestante foi 10/03/2026, com ciclos regulares. Aplicando a regra de Naegele (DUM + 7 dias, e mês − 3 ou + 9), a data provável do parto é:`,
+ o:['10/12/2026.','17/01/2027.','17/12/2026.','03/12/2026.'],a:2,
+ e:'10/03 + 7 dias = 17/03; mês 3 + 9 = 12 → <b>17/12/2026</b>.'},
+{t:`Em um laboratório de fertilização in vitro, um embriologista explica a sequência de eventos da fecundação. Qual o evento responsável por impedir a entrada de mais de um espermatozoide no óvulo (polispermia)?`,
+ o:['A capacitação do espermatozoide no trato genital feminino.','A reação acrossômica na zona pelúcida.','A formação dos pronúcleos masculino e feminino.','A reação cortical, com enrijecimento da zona pelúcida.'],a:3,
+ e:'A <b>reação cortical</b> (liberação de grânulos corticais) modifica a zona pelúcida e bloqueia a polispermia.'},
+{t:`Mulher de 27 anos, ciclos regulares de 28 dias, relata um pequeno sangramento rosado, de um dia, cerca de 8 dias após a ovulação, sem dor significativa. O teste de gravidez ainda é negativo. Qual a hipótese mais coerente?`,
+ o:['Menstruação adiantada por falha do corpo lúteo.','Sangramento de nidação, relacionado à invasão do endométrio secretor pelo sinciciotrofoblasto.','Rotura de cisto de corpo lúteo, com hemoperitônio.','Aborto espontâneo completo.'],a:1,
+ e:'Implantação ~dias 6–10: o <b>sinciciotrofoblasto</b> invade o endométrio e pode causar sangramento leve (nidação). O β-hCG ainda pode estar abaixo do detectável.'},
+{t:`Mulher de 29 anos, 7 semanas de atraso menstrual, queixa dor pélvica unilateral e sangramento escasso. β-hCG positivo. A ultrassonografia transvaginal não mostra saco gestacional intrauterino, mas há massa anexial à direita. Qual o local mais comum para esse tipo de gestação?`,
+ o:['Ampola da tuba uterina.','Istmo da tuba uterina.','Ovário.','Colo do útero.'],a:0,
+ e:'<b>Gravidez ectópica</b>: mais comum na <b>ampola</b> da tuba uterina (cerca de 70–80%).'},
+{t:`A figura representa um embrião no 8º dia de desenvolvimento (disco bilaminar). Qual estrutura numerada dará origem aos três folhetos embrionários (ecto, meso e endoderma) durante a gastrulação?`,
+ f:figBilam,c:'1 a 5',
+ o:['1','3','2','4'],a:2,
+ e:'Todas as camadas germinativas derivam do <b>epiblasto</b> (2). O hipoblasto (3) é substituído pelo endoderma definitivo; 1 = cavidade amniótica, 4 = saco vitelino, 5 = sinciciotrofoblasto.'},
+{t:`Durante a 3ª semana, células da linha primitiva sofrem migração e invaginação. Assinale a descrição correta do processo de gastrulação.`,
+ o:['O hipoblasto migra e forma o mesoderma; o epiblasto forma o endoderma.','Células do epiblasto migram pela linha primitiva e formam o mesoderma; o hipoblasto é substituído e o epiblasto remanescente forma o ectoderma.','A notocorda dá origem à crista neural e ao endoderma.','As primeiras células a invaginar formam o ectoderma, que substitui o endoderma original.'],a:1,
+ e:'Células do epiblasto <b>migram e invaginam</b>: as primeiras deslocam o hipoblasto e formam o <b>endoderma</b>; depois formam o <b>mesoderma</b>; o epiblasto restante é o <b>ectoderma</b>. (A ordem correta que vimos: D → C → A → B → F → E.)'},
+{t:`Em um caso clínico, um recém-nascido apresenta cardiopatia congênita, atresia de esôfago e hipoplasia renal. Para correlacionar cada órgão ao folheto de origem, qual associação é correta?`,
+ o:['Fígado: mesoderma; epiderme: endoderma; rim: ectoderma.','Fígado e pâncreas: endoderma; epiderme: ectoderma; rim e coração: mesoderma.','Pâncreas: ectoderma; sistema nervoso: mesoderma; coração: endoderma.','Rim: endoderma; sistema nervoso: ectoderma; epiderme: mesoderma.'],a:1,
+ e:'<b>Endoderma</b>: revestimento do tubo digestivo/respiratório, fígado, pâncreas. <b>Ectoderma</b>: SN e epiderme. <b>Mesoderma</b>: músculo, osso, sangue, rim, coração.'},
+{t:`A figura mostra um corte transversal na 3ª semana de desenvolvimento, durante a neurulação. Qual estrutura numerada dará origem a neurônios sensitivos, células de Schwann e melanócitos?`,
+ f:figNeural,c:'Estruturas numeradas de 1 a 4',
+ o:['2','1','3','4'],a:0,
+ e:'A <b>crista neural</b> (2), origem em <b>ectoderma</b>, nas bordas das pregas neurais, migra e forma neurônios sensitivos/autonômicos, células de Schwann e melanócitos. A notocorda (1) é mesoderma e induz a placa neural.'},
+{t:`Uma mulher de 31 anos, que planeja engravidar e já teve uma filha com espinha bífida, recebe a orientação de iniciar a suplementação de ácido fólico antes da concepção. Qual é a justificativa embriológica para essa orientação?`,
+ o:['O tubo neural fecha na 12ª semana, portanto é preciso preparar o organismo com antecedência.','O ácido fólico previne a síndrome de Down por correção da não-disjunção.','O fechamento dos neuróporos ocorre até o fim da 4ª semana de desenvolvimento (cerca de 6ª semana de IG), quando muitas mulheres ainda não sabem que estão grávidas.','O ácido fólico atua apenas na formação da placenta.'],a:2,
+ e:'O tubo neural fecha ao <b>fim da 4ª semana de desenvolvimento</b>. A suplementação deve ser <b>periconcepcional</b>.'},
+{t:`Duas gestantes sofreram exposição acidental a um agente teratogênico: a primeira no 9º dia após a fecundação e a segunda na 5ª semana de desenvolvimento. Qual a previsão mais coerente?`,
+ o:['Ambas terão fetos com malformações graves.','O maior risco de malformação é no 9º dia; na 5ª semana não há risco.','Nenhum risco em qualquer das duas fases.','Na primeira, vale a lei do “tudo ou nada” (aborto ou recuperação); na segunda, período de organogênese com risco de malformações.'],a:3,
+ e:'Semanas 1–2: <b>tudo ou nada</b>. Semanas 3–8: <b>organogênese</b>, período crítico para malformações.'},
+{t:`Recém-nascido apresenta defeito de fechamento da parede abdominal ventral, com alças intestinais expostas à direita do cordão umbilical (gastrosquise). Qual processo do desenvolvimento embrionário está mais relacionado a esse tipo de defeito?`,
+ o:['Neurulação.','Dobramento lateral (fechamento ventral da parede do corpo).','Implantação.','Gametogênese.'],a:1,
+ e:'O <b>dobramento lateral</b> fecha a parede ventral do corpo e traz o endoderma para dentro (intestino primitivo). Falhas → defeitos de parede ventral.'},
+{t:`Gestante de 12 semanas realiza ultrassonografia do primeiro trimestre, que mostra translucência nucal aumentada e osso nasal não visualizado. Qual a interpretação mais adequada?`,
+ o:['Marcadores de rastreamento que aumentam o risco de alterações cromossômicas, como a síndrome de Down, e indicam a necessidade de investigação adicional.','Diagnóstico definitivo de síndrome de Down.','Achado normal, sem necessidade de acompanhamento.','Indicador específico de pré-eclâmpsia.'],a:0,
+ e:'Translucência nucal espessada e osso nasal ausente são <b>marcadores de rastreamento</b> (aumentam risco), não diagnóstico. O Doppler das <b>artérias uterinas</b> (IP) avalia o risco de pré-eclâmpsia.'},
+{t:`Sobre a placenta humana, assinale a alternativa correta.`,
+ o:['O sangue materno e o fetal se misturam livremente nas vilosidades coriônicas.','A parte fetal da placenta é a decídua basal, e a materna é o cório.','A parte fetal é o cório (vilosidades coriônicas) e a materna é a decídua basal; as trocas ocorrem por difusão pela barreira placentária, sem mistura direta do sangue.','A placenta produz exclusivamente o hormônio hCG.'],a:2,
+ e:'Placenta = <b>cório</b> (fetal) + <b>decídua basal</b> (materna). Sangues <b>não se misturam</b>. Também produz progesterona, estrogênio e outros hormônios.'},
+{t:`A figura mostra um heredograma de uma família em que ambos os pais são portadores do traço falciforme (AS) e uma filha tem anemia falciforme (SS). O casal planeja uma nova gestação. Qual a probabilidade de a criança ser portadora assintomática (AS)?`,
+ f:figHered,c:'Heredograma de anemia falciforme (herança autossômica recessiva)',
+ o:['25%','12,5%','50%','75%'],a:2,
+ e:'AS × AS → 25% AA, <b>50% AS</b>, 25% SS. Doença autossômica recessiva; a troca é GAG→GTG (Glu→Val) na cadeia β.'},
+{t:`Uma criança de 8 anos sofre queda e a radiografia mostra uma linha de fratura que atinge a placa epifisária do fêmur distal (seta). Qual é a principal complicação a longo prazo a ser considerada?`,
+ f:figRX,c:'RX esquemático',
+ o:['Calcificação da cartilagem articular do joelho.','Aumento do número de osteoclastos, causando osteoporose.','Substituição do osso por tecido adiposo.','Alteração do crescimento longitudinal do osso, por lesão da cartilagem de crescimento.'],a:3,
+ e:'A <b>placa epifisária</b> (cartilagem hialina) é responsável pelo crescimento <b>em comprimento</b>. Lesões podem causar encurtamento ou deformidade.'},
+{t:`Sobre os mecanismos de ossificação, assinale a alternativa correta.`,
+ o:['Os ossos chatos do crânio formam-se por ossificação intramembranosa, e os ossos longos, como o fêmur, por ossificação endocondral.','Os ossos chatos do crânio formam-se por ossificação endocondral, e o fêmur, por intramembranosa.','Ambos se formam exclusivamente por ossificação intramembranosa.','Ambos se formam exclusivamente por ossificação endocondral.'],a:0,
+ e:'<b>Intramembranosa</b>: direto no conjuntivo (calota). <b>Endocondral</b>: sobre molde de cartilagem hialina (ossos longos).'},
+{t:`Durante a cirurgia de uma gestante que sofreu trauma pélvico, o cirurgião observa que as duas hemipelves se articulam anteriormente por um disco de fibrocartilagem, com mobilidade muito pequena. Essa articulação é classificada como:`,
+ o:['Fibrosa, do tipo sutura.','Sinovial esferóidea.','Cartilagínea, do tipo sínfise (sínfise púbica).','Sinovial plana.'],a:2,
+ e:'Sínfise púbica = <b>articulação cartilagínea</b> (sínfise), com fibrocartilagem e movimento limitado.'},
+{t:`Um paciente consegue dobrar o cotovelo (flexão e extensão) e também girar o antebraço de modo que a palma fique voltada para cima ou para baixo (supinação e pronação). Os tipos de articulação sinovial que predominam nessas funções (articulação do cotovelo, entre úmero e ulna, e radioulnar proximal) são, respectivamente:`,
+ o:['Esferóidea e plana.','Dobradiça (gínglimo) e pivô (trocóidea).','Selar e elipsóidea.','Pivô e dobradiça.'],a:1,
+ e:'Cotovelo (úmero-ulnar) = <b>dobradiça</b>; radioulnar proximal = <b>pivô</b>. Ombro e quadril = esferóideas.'},
+{t:`A figura mostra uma pessoa em posição lateral, elevando o braço para frente (movimento M). Em relação à posição anatômica, esse movimento é descrito como:`,
+ f:figArm,c:'Vista de perfil',
+ o:['Abdução, no plano coronal, em torno do eixo anteroposterior.','Extensão, no plano sagital, em torno do eixo longitudinal.','Rotação lateral, no plano transversal, em torno do eixo transversal.','Flexão, no plano sagital, em torno do eixo transversal.'],a:3,
+ e:'Elevar o braço <b>à frente</b> = <b>flexão</b>; ocorre no plano <b>sagital</b>, em torno do eixo <b>transversal</b>.'},
+{t:`Uma tomografia computadorizada de crânio, realizada após trauma, mostra uma área em crescente sob a calota (A), com densidade medida de +72 UH, e uma região central (B) com +6 UH. Considerando as unidades Hounsfield, a região A é compatível com:`,
+ f:figCT,c:'TC esquemática',
+ o:['Sangramento agudo (hiperdenso).','Gordura.','Osso cortical.','Ar.'],a:0,
+ e:'Sangue <b>agudo</b>: ~60–90 UH (hiperdenso). Líquor (~0–15 UH) é a região B. Gordura ≈ −100; osso cortical &gt; 1000; ar ≈ −1000.'},
+{t:`Durante uma aula prática, um estudante de medicina, usando jaleco e luvas, perfura acidentalmente o dedo com uma agulha usada em uma coleta de sangue. Qual a conduta inicial mais adequada?`,
+ o:['Espremer o local para fazer sair o sangue e aplicar álcool a 70%.','Aguardar o fim da aula e procurar atendimento no dia seguinte.','Lavar imediatamente com água e sabão, sem espremer, comunicar o acidente e buscar avaliação para profilaxia.','Cobrir com curativo oclusivo e não comunicar para evitar alarme.'],a:2,
+ e:'Lavar com água e sabão, <b>não espremer</b>, comunicar/registrar e procurar atendimento (profilaxia pós-exposição).'},
+{t:`Médico atende um adulto com sarampo, doença de notificação compulsória. O paciente pede que o diagnóstico "não seja comunicado a ninguém". Segundo o Código de Ética Médica, qual a conduta correta?`,
+ o:['Manter o sigilo absoluto, em respeito à autonomia.','Notificar a vigilância epidemiológica, pois o dever legal é uma exceção ao sigilo médico.','Informar a família e o empregador sem a autorização do paciente.','Divulgar o caso nas redes sociais para alertar a população.'],a:1,
+ e:'Exceções ao sigilo: <b>motivo justo, dever legal, autorização por escrito</b>. Notificação compulsória = dever legal; a comunicação é restrita às autoridades competentes.'},
+{t:`Paciente adulta, lúcida e orientada, após ser informada sobre riscos, benefícios e alternativas, recusa um procedimento eletivo que a equipe acredita que a beneficiaria. Qual o conflito de princípios e qual a conduta mais adequada?`,
+ o:['Justiça × autonomia; deve-se realizar o procedimento sob sedação.','Não maleficência × justiça; deve-se encaminhar para a Justiça.','Beneficência × justiça; deve-se escolher o paciente seguinte da lista.','Beneficência × autonomia; deve-se respeitar a decisão informada e registrar em prontuário, mantendo o acompanhamento.'],a:3,
+ e:'Paciente competente e informado tem direito à <b>autonomia</b>; a equipe deve respeitar, registrar e manter o cuidado.'},
+{t:`Uma unidade de saúde em um bairro de grande vulnerabilidade social passa a receber mais profissionais e recursos que unidades de bairros com melhores condições. Qual princípio do SUS justifica essa decisão?`,
+ o:['Equidade: tratar desigualmente os desiguais, conforme as necessidades.','Universalidade: todos têm direito, independentemente de necessidade.','Integralidade: assistência restrita a ações curativas.','Descentralização: concentrar toda decisão na esfera federal.'],a:0,
+ e:'<b>Equidade</b> = mais a quem precisa mais. Universalidade = acesso de todos. Integralidade = cuidado em todos os níveis. Descentralização = gestão compartilhada entre esferas.'},
+{t:`Um município organiza três ações: (I) rastreamento do câncer de colo do útero com Papanicolau em mulheres assintomáticas; (II) campanha de vacinação contra HPV; (III) fisioterapia e reabilitação para pacientes pós-AVC. Segundo Leavell e Clark, essas ações correspondem, respectivamente, a prevenção:`,
+ o:['Primária, secundária e terciária.','Terciária, primária e secundária.','Secundária, primária e terciária.','Primária, terciária e secundária.'],a:2,
+ e:'I = <b>secundária</b> (diagnóstico precoce); II = <b>primária</b> (proteção específica); III = <b>terciária</b> (reabilitação).'},
+{t:`Segundo as Diretrizes Curriculares Nacionais (DCN) de 2001, o perfil do egresso do curso de Medicina é caracterizado como:`,
+ o:['Especialista, técnico, focado na doença e no hospital.','Generalista, humanista, crítico e reflexivo.','Pesquisador exclusivo, sem atuação assistencial.','Gestor, sem formação clínica.'],a:1,
+ e:'DCN 2001: <b>generalista, humanista, crítico e reflexivo</b>. (A de 2014 reforça SUS/APS/urgência e emergência; a de 2025 traz 27 competências.)'}
+];
+
+/* ============ QUESTÕES ABERTAS ============ */
+const OQ=[
+{t:`Descreva a gastrulação (3ª semana): o que ocorre, qual a estrutura-chave e quais são os três folhetos formados. Cite pelo menos dois derivados de cada folheto.`,
+ m:`<b>Esperado:</b> formação da <b>linha primitiva</b> no epiblasto (~dia 15), com <b>nó primitivo</b>; células do epiblasto migram e <b>invaginam</b>; as primeiras deslocam o hipoblasto e formam o <b>endoderma</b>; depois o <b>mesoderma</b>; o epiblasto restante é o <b>ectoderma</b> → disco trilaminar. Formação da <b>notocorda</b> (mesoderma axial, induz a neurulação). Derivados: <b>ectoderma</b> (SN, epiderme, crista neural), <b>mesoderma</b> (músculo, osso, sangue, rim, coração), <b>endoderma</b> (revestimento digestivo e respiratório, fígado, pâncreas).`},
+{t:`Explique o ciclo menstrual: fases, hormônios predominantes em cada uma, o papel do feedback e o que desencadeia a ovulação.`,
+ m:`<b>Esperado:</b> fase <b>folicular</b> (FSH → recrutamento folicular; estrogênio ↑; endométrio proliferativo), <b>pico de estrogênio</b> → feedback <b>positivo</b> → <b>pico de LH</b> (~24–36 h antes) → <b>ovulação</b> (~dia 14); fase <b>lútea</b> (corpo lúteo → <b>progesterona</b>; endométrio secretor); se não há gravidez, o corpo lúteo regride, hormônios caem e ocorre <b>menstruação</b>. Feedback negativo da progesterona/estrogênio e da inibina sobre FSH/LH.`},
+{t:`Descreva a sequência de eventos da fecundação até a implantação, indicando o dia aproximado e os principais componentes do blastocisto.`,
+ m:`<b>Esperado:</b> capacitação → corona radiata → zona pelúcida (ZP3) → <b>reação acrossômica</b> → fusão → <b>reação cortical</b> (bloqueio da polispermia) → pronúcleos → <b>zigoto</b>; <b>clivagem</b> (blastômeros) → <b>mórula</b> (dia 3–4) → <b>blastocisto</b> (dia 5: embrioblasto, trofoblasto, blastocele) → eclosão → aderência (dia 6) e <b>implantação</b> (dia 7+) na fase secretora; trofoblasto → citotrofoblasto + sinciciotrofoblasto (hCG); embrioblasto → disco bilaminar (epiblasto + hipoblasto).`},
+{t:`Um médico atende uma paciente adulta que lhe pede para não revelar o diagnóstico ao marido. Discuta o sigilo médico, os princípios da bioética envolvidos e as exceções previstas.`,
+ m:`<b>Esperado:</b> sigilo como dever do médico (CEM, Res. CFM 2.217/2018) e direito do paciente; princípio da <b>autonomia</b> (e confidencialidade ligada à não maleficência); o médico <b>não revela</b> ao marido sem autorização; exceções: <b>motivo justo</b>, <b>dever legal</b> (ex.: notificação compulsória) e <b>autorização por escrito</b>.`},
+{t:`Explique a fisiopatologia da síndrome dos ovários policísticos (SOP) e os principais achados clínicos e laboratoriais.`,
+ m:`<b>Esperado:</b> desequilíbrio do eixo HHG com LH elevado (relação LH/FSH ↑), <b>hiperandrogenismo</b> (teca estimulada pelo LH; menor conversão em estrogênio), <b>resistência à insulina/hiperinsulinemia</b> (estimula androgênio e reduz SHBG), folículos que não amadurecem (sem dominante), <b>anovulação</b> (sem pico de LH, sem corpo lúteo), progesterona baixa → ciclos irregulares/amenorreia. Clínica: oligomenorreia, hirsutismo, acne, acantose nigricans, obesidade; risco de diabetes e infertilidade.`},
+{t:`Compare osteoblastos, osteócitos e osteoclastos e descreva a ossificação endocondral do osso longo.`,
+ m:`<b>Esperado:</b> <b>osteoblasto</b> forma matriz; <b>osteócito</b> mantém o osso (em lacunas, canalículos); <b>osteoclasto</b> reabsorve (multinucleado); matriz com colágeno I + hidroxiapatita. <b>Ossificação endocondral</b>: molde de cartilagem hialina → centro primário na diáfise → centros secundários nas epífises → osso com <b>placa epifisária</b> (cresce em comprimento).`},
+{t:`Descreva a neurulação, a origem da crista neural e explique por que o ácido fólico deve ser iniciado antes da concepção. Cite dois defeitos do tubo neural.`,
+ m:`<b>Esperado:</b> a <b>notocorda</b> induz o ectoderma → <b>placa neural</b> → sulco e pregas → <b>tubo neural</b>; <b>crista neural</b> sai das bordas das pregas (ectoderma). Fechamento dos neuróporos ao fim da 4ª semana (≈ 6ª de IG), quando muitas mulheres ainda não sabem que estão grávidas. Defeitos: <b>espinha bífida</b> (neuróporo caudal), <b>anencefalia</b> (neuróporo cranial).`},
+{t:`Compare os modelos de saúde-doença (mágico-religioso, biomédico, processual e biopsicossocial) e explique os níveis de prevenção de Leavell e Clark, com exemplos. Cite um conceito dos determinantes sociais de saúde.`,
+ m:`<b>Esperado:</b> mágico-religioso (forças sobrenaturais); biomédico/flexneriano (1910, doença como defeito biológico, hospital); processual (Leavell e Clark, 1953: pré-patogênico e patogênico); biopsicossocial (Engel, 1977). Prevenção: <b>primária</b> (promoção e proteção específica, ex. vacina), <b>secundária</b> (diagnóstico e tratamento precoces, ex. rastreamento), <b>terciária</b> (reabilitação); primordial e quaternária. DSS (Dahlgren e Whitehead): camadas, p. ex., condições de vida e trabalho (moradia, saneamento).`}
+];
+
+/* ============ RENDER ============ */
+const L='ABCD';let graded=false;
+const cl=document.getElementById('closed');
+Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q';d.id='q'+i;
+ d.innerHTML=`<div><b class="n">${i+1}.</b> ${q.t}</div>${q.f?`<figure class="fig">${q.f()}<figcaption>${q.c||''}</figcaption></figure>`:''}`+
+ q.o.map((x,j)=>`<label class="opt" id="o${i}_${j}"><input type="radio" name="r${i}" value="${j}"> <b>${L[j]})</b> ${x}</label>`).join('')+`<div class="exp" id="e${i}"><b>Gabarito: ${L[q.a]}.</b> ${q.e}</div>`;
+ cl.appendChild(d)});
+const op=document.getElementById('open');
+OQ.forEach((q,i)=>{const d=document.createElement('div');d.className='q';
+ d.innerHTML=`<div><b class="n">${i+1}.</b> ${q.t}</div><textarea id="a${i}" placeholder="Sua resposta..."></textarea><div class="noprint"><button class="sec" onclick="document.getElementById('m${i}').style.display='block'">Ver resposta-modelo</button></div><div class="model" id="m${i}">${q.m}</div>`;
+ op.appendChild(d)});
+/* salvar */
+const K='simulado-p1-2026';
+function save(){try{const s={n:nome.value,r:Q.map((q,i)=>{const c=document.querySelector(`input[name=r${i}]:checked`);return c?+c.value:null}),a:OQ.map((q,i)=>document.getElementById('a'+i).value)};localStorage.setItem(K,JSON.stringify(s))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem(K)||'null');if(!s)return;nome.value=s.n||'';s.r.forEach((v,i)=>{if(v!==null){const el=document.querySelector(`input[name=r${i}][value="${v}"]`);if(el)el.checked=true}});s.a.forEach((v,i)=>document.getElementById('a'+i).value=v||'')}catch(e){}}
+const nome=document.getElementById('nome');
+document.addEventListener('input',save);load();
+function grade(){let ok=0;Q.forEach((q,i)=>{const c=document.querySelector(`input[name=r${i}]:checked`);const v=c?+c.value:-1;
+ q.o.forEach((x,j)=>{const el=document.getElementById(`o${i}_${j}`);el.classList.remove('ok','no');if(j==q.a)el.classList.add('ok');else if(j==v)el.classList.add('no')});
+ document.getElementById('e'+i).style.display='block';if(v==q.a)ok++});
+ const p=Math.round(ok/Q.length*100);document.getElementById('score').textContent=`Resultado: ${ok}/${Q.length} (${p}%)`;
+ document.getElementById('score').scrollIntoView({behavior:'smooth'})}
+function resetAll(){if(!confirm('Apagar todas as respostas?'))return;try{localStorage.removeItem(K)}catch(e){}location.reload()}
+</script></body></html>
