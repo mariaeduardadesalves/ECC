@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cartilagem, osso e articulações</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:900px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
+button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+svg text{fill:var(--fg);font-size:12px}
+svg .t{font-size:14px;font-weight:bold}
+svg .s{font-size:11px;fill:var(--mut)}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Cartilagem, osso e articulações</h1>
+<div id="tabs"></div>
+<svg id="v" viewBox="0 0 800 400" role="img" aria-label="Esquema"></svg>
+<div id="info"></div>
+<p><small>Esquemas didáticos, sem escala.</small></p>
+<script>
+const bl='#aed6f1',pk='#f5b7b1',pkd='#e6867e',ye='#f9e79f',gr='#abebc6';
+const tx=(x,y,s,c='',a='middle')=>`<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${s}</text>`;
+const cell=(x,y,r=9)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#2874a6" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="${r/3}" fill="#2874a6"/>`;
+const arrow=(x1,y1,x2,y2,c='#555')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.5" marker-end="url(#ah)"/>`;
+const defs=`<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#555"/></marker></defs>`;
+
+function cart(){let o=defs;
+ // hialina
+ o+=tx(140,24,'HIALINA','t')+`<rect x="30" y="40" width="220" height="220" fill="${bl}" stroke="#2874a6"/><rect x="30" y="40" width="220" height="18" fill="${pk}"/>`+tx(140,53,'pericôndrio','s');
+ [[70,100],[95,108],[160,95],[185,103],[110,170],[135,178],[200,160],[75,220],[165,225],[220,215]].forEach(p=>o+=cell(...p));
+ o+=tx(140,285,'matriz homogênea (colágeno II)','s')+tx(140,305,'traqueia, nariz, superfície articular,','s')+tx(140,320,'molde dos ossos longos','s');
+ // elástica
+ o+=tx(400,24,'ELÁSTICA','t')+`<rect x="290" y="40" width="220" height="220" fill="${bl}" stroke="#2874a6"/><rect x="290" y="40" width="220" height="18" fill="${pk}"/>`+tx(400,53,'pericôndrio','s');
+ for(let i=0;i<9;i++){let y=80+i*20;o+=`<path d="M290,${y} q20,-12 40,0 t40,0 t40,0 t40,0 t40,0 t20,0" fill="none" stroke="#7d3c98" stroke-width="1.3"/>`}
+ [[330,95],[370,110],[430,98],[470,115],[345,170],[410,165],[455,190],[320,230],[390,225],[470,235]].forEach(p=>o+=cell(...p,8));
+ o+=tx(400,285,'rede de fibras elásticas (roxo)','s')+tx(400,305,'orelha, epiglote','s');
+ // fibrosa
+ o+=tx(660,24,'FIBROSA','t')+`<rect x="550" y="40" width="220" height="220" fill="${pk}" stroke="#c0392b"/>`;
+ for(let i=0;i<5;i++){let y=70+i*42;o+=`<rect x="550" y="${y}" width="220" height="14" fill="#fff" opacity=".7"/>`;o+=cell(590,y+7,6)+cell(640,y+7,6)+cell(690,y+7,6)+cell(740,y+7,6)}
+ o+=tx(660,285,'feixes de colágeno I + fileiras de condrócitos','s')+tx(660,305,'SEM pericôndrio','s')+tx(660,320,'disco intervertebral, menisco, sínfise púbica','s');
+ o+=tx(400,370,'Todas são AVASCULARES (nutridas por difusão). Condrócito dentro de lacuna.','t');
+ return o}
+
+function osso(){let o=defs;
+ o+=`<rect x="0" y="0" width="800" height="55" fill="${pk}" opacity=".6"/>`+tx(60,25,'periósteo','t')+`<rect x="0" y="55" width="800" height="345" fill="#f6ddcc"/>`;
+ // osteoblastos
+ for(let i=0;i<5;i++){o+=`<rect x="${70+i*34}" y="62" width="28" height="22" rx="5" fill="#5dade2" stroke="#21618c"/>`}
+ o+=tx(330,76,'OSTEOBLASTOS (formam matriz)','t','start')+tx(330,94,'cúbicos, na superfície','s','start');
+ o+=`<ellipse cx="80" cy="40" rx="16" ry="9" fill="#d2b4de" stroke="#6c3483"/>`+tx(130,38,'osteoprogenitora','s','start');
+ // osteoide
+ o+=`<rect x="60" y="86" width="190" height="10" fill="#fff" opacity=".6"/>`+arrow(325,72,255,76)+arrow(330,114,255,93)+tx(335,118,'osteoide (matriz ainda sem mineral)','s','start');
+ // osteocito + canaliculos
+ o+=`<ellipse cx="170" cy="250" rx="24" ry="15" fill="#fff" stroke="#8e5a3c"/><ellipse cx="170" cy="250" rx="11" ry="8" fill="#8e44ad"/>`;
+ [[-30,-12],[-32,6],[30,-12],[32,8],[0,-26],[0,24]].forEach(([dx,dy])=>o+=`<line x1="${170+dx*.6}" y1="${250+dy*.6}" x2="${170+dx*1.8}" y2="${250+dy*1.8}" stroke="#8e5a3c"/>`);
+ o+=tx(170,300,'OSTEÓCITO (mantém o osso)','t')+tx(170,318,'dentro da lacuna; canalículos','s');
+ // osteoclasto
+ o+=`<path d="M480,330 Q560,210 640,330 Z" fill="#f6ddcc" stroke="#8e5a3c" stroke-dasharray="4 3"/>`;
+ o+=`<ellipse cx="560" cy="235" rx="95" ry="45" fill="#58d68d" stroke="#1e8449" stroke-width="2"/>`;
+ [[525,230],[550,225],[575,235],[600,228],[560,248]].forEach(p=>o+=`<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="#145a32"/>`);
+ o+=tx(560,180,'OSTEOCLASTO (reabsorve)','t')+tx(560,300,'grande, MULTINUCLEADO','s')+tx(560,345,'lacuna de Howship (cavidade que ele escava)','s');
+ o+=tx(700,120,'Matriz: colágeno I (flexível)','s','end')+tx(700,138,'+ hidroxiapatita (dura)','s','end');
+ o+=tx(400,390,'BLASTO = constrói · CLASTO = quebra','t');
+ return o}
+
+function ossif(){let o=defs;
+ o+=tx(200,22,'INTRAMEMBRANOSA (osso no conjuntivo)','t');
+ // 3 stages
+ o+=`<rect x="20" y="40" width="110" height="100" fill="#fdebd0" stroke="#999"/>`;
+ [[40,60],[70,90],[100,65],[50,115],[105,120],[85,55]].forEach(p=>o+=`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="#d2b4de"/>`);
+ o+=tx(75,158,'1 mesenquimais','s');
+ o+=arrow(135,90,155,90);
+ o+=`<rect x="160" y="40" width="110" height="100" fill="#fdebd0" stroke="#999"/><ellipse cx="215" cy="90" rx="22" ry="16" fill="${pkd}"/>`;
+ for(let a=0;a<8;a++){let x=215+34*Math.cos(a*.785),y=90+30*Math.sin(a*.785);o+=`<circle cx="${x}" cy="${y}" r="5" fill="#5dade2"/>`}
+ o+=tx(215,158,'2 osteoblastos','s');
+ o+=arrow(275,90,295,90);
+ o+=`<rect x="300" y="40" width="110" height="100" fill="#fdebd0" stroke="#999"/>`;
+ [[330,70,360,100],[330,115,375,80],[350,55,395,115]].forEach(l=>o+=`<line x1="${l[0]}" y1="${l[1]}" x2="${l[2]}" y2="${l[3]}" stroke="${pkd}" stroke-width="9" stroke-linecap="round"/>`);
+ o+=tx(355,158,'3 trabéculas → osso','s');
+ o+=tx(215,190,'ex.: ossos chatos do crânio','t');
+ // endocondral
+ o+=tx(400,212,'ENDOCONDRAL (osso substitui cartilagem hialina)','t');
+ const bone=(x,mid,epi,ph)=>{let s='';const sh=`<rect x="${x+14}" y="270" width="26" height="90" rx="6" fill="${bl}" stroke="#2874a6"/><circle cx="${x+8}" cy="270" r="14" fill="${bl}" stroke="#2874a6"/><circle cx="${x+46}" cy="270" r="14" fill="${bl}" stroke="#2874a6"/><circle cx="${x+8}" cy="362" r="14" fill="${bl}" stroke="#2874a6"/><circle cx="${x+46}" cy="362" r="14" fill="${bl}" stroke="#2874a6"/>`;return sh};
+ const xs=[40,230,420,610];
+ xs.forEach((x,i)=>{o+=bone(x)});
+ // stage overlays
+ o+=`<rect x="${230+14}" y="300" width="26" height="30" fill="${pkd}"/>`; // st2 centro primario
+ o+=`<rect x="${420+14}" y="290" width="26" height="50" fill="${pkd}"/><circle cx="${420+8}" cy="270" r="9" fill="${pkd}"/><circle cx="${420+46}" cy="270" r="9" fill="${pkd}"/>`;
+ o+=`<rect x="${610+14}" y="270" width="26" height="90" fill="${pkd}"/><circle cx="${610+8}" cy="270" r="14" fill="${pkd}"/><circle cx="${610+46}" cy="270" r="14" fill="${pkd}"/><circle cx="${610+8}" cy="362" r="14" fill="${pkd}"/><circle cx="${610+46}" cy="362" r="14" fill="${pkd}"/>`;
+ o+=`<rect x="${610+14}" y="278" width="26" height="4" fill="${bl}"/><rect x="${610+14}" y="350" width="26" height="4" fill="${bl}"/>`;
+ o+=tx(95,390,'1 molde de cartilagem','s')+tx(285,390,'2 centro primário (diáfise)','s')+tx(475,390,'3 centros secundários (epífises)','s')+tx(665,390,'4 osso + placa epifisária','s');
+ o+=tx(40,236,'azul = cartilagem · rosa = osso','s','start');
+ o+=tx(780,236,'placa epifisária = cartilagem que alonga o osso','s','end');
+ return o}
+
+function artic(){let o=defs;
+ const bn=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2" rx="6"/>`;
+ // fibrosa
+ o+=tx(130,22,'FIBROSA','t')+bn(40,40,180,70)+bn(40,125,180,70);
+ o+=`<path d="M40,117 l15,-6 l15,12 l15,-12 l15,12 l15,-12 l15,12 l15,-12 l15,12 l15,-12 l15,12" fill="none" stroke="#c0392b" stroke-width="4"/>`;
+ o+=tx(130,215,'tecido conjuntivo denso','s')+tx(130,232,'sutura do crânio','s')+tx(130,248,'quase imóvel','s');
+ // cartilaginea
+ o+=tx(400,22,'CARTILAGÍNEA','t')+bn(310,40,180,70)+bn(310,138,180,70)+`<rect x="310" y="112" width="180" height="24" fill="${bl}" stroke="#2874a6" stroke-width="2"/>`+tx(400,128,'cartilagem','s');
+ o+=tx(400,228,'sincondrose = hialina','s')+tx(400,245,'sínfise = fibrocartilagem','s')+tx(400,261,'(sínfise púbica, discos)','s')+tx(400,277,'pouco movimento','s');
+ // sinovial
+ o+=tx(670,22,'SINOVIAL','t');
+ o+=bn(590,40,160,60)+bn(590,170,160,60);
+ o+=`<rect x="590" y="100" width="160" height="8" fill="${bl}" stroke="#2874a6"/><rect x="590" y="162" width="160" height="8" fill="${bl}" stroke="#2874a6"/>`;
+ o+=`<rect x="590" y="108" width="160" height="54" fill="${ye}" opacity=".6"/>`;
+ o+=`<path d="M576,70 L576,200 M764,70 L764,200" stroke="#7d3c98" stroke-width="5"/><path d="M582,108 L582,162 M758,108 L758,162" stroke="#27ae60" stroke-width="4"/>`;
+ o+=tx(670,140,'cavidade + líquido sinovial','s');
+ o+=tx(560,64,'cápsula','s','end')+tx(560,150,'membrana sinovial','s','end')+tx(560,175,'(verde)','s','end')+tx(670,252,'cartilagem hialina (azul)','s');
+ o+=tx(670,270,'muito movimento','s');
+ o+=tx(400,330,'Fibrosa: quase fixa · Cartilagínea: pouco móvel · Sinovial: livre','t');
+ o+=tx(400,355,'Ligamento = osso-osso · Tendão = músculo-osso','s');
+ return o}
+
+function tipos(){let o=defs;
+ const box=(i,title,mov,ex,draw)=>{const x=20+(i%3)*260,y=20+Math.floor(i/3)*190;return `<g transform="translate(${x},${y})"><rect width="240" height="175" rx="8" fill="none" stroke="#999"/>${tx(120,20,title,'t')}${draw}${tx(120,150,mov,'s')}${tx(120,166,ex,'s')}</g>`};
+ const br=(x,y,w,h,r=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/>`;
+ o+=box(0,'Dobradiça (gínglimo)','1 eixo: flexão/extensão','cotovelo, interfalângicas',br(40,50,60,70,6)+`<circle cx="120" cy="85" r="20" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/>`+br(140,60,70,50,6)+arrow(185,45,185,30));
+ o+=box(1,'Pivô (trocóidea)','rotação','atlas–áxis, rádio–ulna',`<rect x="100" y="45" width="30" height="85" rx="6" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/><path d="M70,70 a50,18 0 0 1 90,0" fill="none" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>`+br(80,110,70,20,6));
+ o+=box(2,'Esferóidea','vários eixos','ombro, quadril',`<circle cx="120" cy="70" r="26" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/><path d="M85,80 a35,35 0 0 0 70,0" fill="none" stroke="#8e5a3c" stroke-width="6"/>`+br(105,96,30,40,6)+`<path d="M70,55 a60,40 0 0 1 100,0" fill="none" stroke="#c0392b" marker-end="url(#ah)"/>`);
+ o+=box(3,'Plana','deslizamento','carpo, tarso',br(50,50,140,25,4)+br(50,85,140,25,4)+arrow(80,125,150,125)+arrow(150,120,80,120));
+ o+=box(4,'Elipsóidea (condilar)','2 eixos, sem rotação','punho',`<ellipse cx="120" cy="65" rx="40" ry="22" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/>`+br(70,85,100,40,6)+arrow(40,70,70,70)+arrow(120,45,120,30));
+ o+=box(5,'Selar (em sela)','2 eixos + rotação','carpometacarpal do polegar',`<path d="M60,70 Q120,110 180,70 L180,50 Q120,90 60,50 Z" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/><path d="M80,100 Q120,60 160,100 L160,120 L80,120 Z" fill="#f6ddcc" stroke="#8e5a3c" stroke-width="2"/>`);
+ return o}
+
+const tabs=[
+ ['Cartilagem',cart,'<b>3 tipos de cartilagem.</b> Hialina (colágeno II, vítrea) é a mais comum e é o molde dos ossos. Elástica tem fibras elásticas. Fibrosa tem colágeno I em feixes e <b>não tem pericôndrio</b>.'],
+ ['Osso: células',osso,'<b>Quem faz o quê:</b> osteoprogenitora → osteoblasto (forma) → osteócito (mantém). O osteoclasto (multinucleado) reabsorve a matriz. A matriz tem colágeno I + hidroxiapatita.'],
+ ['Ossificação',ossif,'<b>Intramembranosa:</b> osso se forma direto no conjuntivo (crânio). <b>Endocondral:</b> osso substitui um molde de cartilagem hialina (ossos longos); a placa epifisária permite crescer em comprimento.'],
+ ['Articulações',artic,'<b>Pelo tecido que une:</b> fibrosa (suturas), cartilagínea (sincondrose = hialina; sínfise = fibrocartilagem) e sinovial (cavidade com líquido).'],
+ ['Tipos de sinovial',tipos,'<b>Formato → movimento.</b> Ombro e quadril: esferóidea. Cotovelo: dobradiça. Atlas–áxis: pivô. Punho: elipsóidea. Polegar: selar. Carpo: plana.']
+];
+let cur=0;const T=document.getElementById('tabs');
+tabs.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t[0];b.onclick=()=>{cur=i;draw()};T.appendChild(b)});
+function draw(){document.getElementById('v').innerHTML=tabs[cur][1]();document.getElementById('info').innerHTML=tabs[cur][2];[...T.children].forEach((b,i)=>b.setAttribute('aria-pressed',i==cur))}
+draw();
+</script></body></html>
