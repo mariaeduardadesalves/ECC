@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Circulação fetal</title>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#555;--bd:#ccc}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mut:#aaa;--bd:#444}}
+body{font-family:system-ui,sans-serif;max-width:900px;margin:16px auto;padding:0 16px;background:var(--bg);color:var(--fg)}
+h1{font-size:20px} svg{width:100%;height:auto;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
+button{font:inherit;padding:6px 10px;margin:2px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+button[aria-pressed=true]{background:#2471a3;color:#fff;border-color:#2471a3}
+#info{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:10px}
+svg text{fill:var(--fg);font-size:13px;paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.lg span{display:inline-block;margin-right:14px;font-size:13px}.lg i{display:inline-block;width:22px;height:8px;margin-right:4px;border-radius:3px}
+small{color:var(--mut)}
+</style></head><body>
+<h1>Circulação fetal: o caminho do sangue</h1>
+<div id="modes"></div><div id="st"></div>
+<svg id="v" viewBox="0 0 800 520" role="img" aria-label="Circulação fetal"></svg>
+<div class="lg"><span><i style="background:#c0392b"></i>mais oxigenado (~80%)</span><span><i style="background:#e67e22"></i>intermediário (mistura)</span><span><i style="background:#2e86c1"></i>menos oxigenado</span></div>
+<div id="info"></div>
+<p><small>Esquema didático e simplificado. Saturações são valores de referência e variam entre os livros: vale o seu livro.</small></p>
+<script>
+const R='#c0392b',O='#e67e22',B='#2e86c1';
+const tx=(x,y,s,a='middle',sz=13,w='normal')=>`<text x="${x}" y="${y}" text-anchor="${a}" font-size="${sz}" font-weight="${w}">${s}</text>`;
+const pl=(pts,c,id,w=9)=>`<polyline id="${id}" points="${pts}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" marker-end="url(#m${c.slice(1)})"/>`;
+const mk=c=>`<marker id="m${c.slice(1)}" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="9" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="${c}"/></marker>`;
+const steps=[
+ ['1. Veia umbilical','Leva da placenta o sangue <b>mais oxigenado</b> do sistema (~80%). Faz no feto o papel das veias pulmonares do adulto.'],
+ ['2. Ducto venoso','Parte do sangue <b>pula o fígado</b> e vai direto para a veia cava inferior (VCI), onde se mistura com sangue pouco oxigenado do corpo inferior.'],
+ ['3. Forame oval','No átrio direito, boa parte do fluxo da VCI é direcionada (pela crista dividens) <b>para o átrio esquerdo</b>, atravessando o forame oval, e vai ao ventrículo esquerdo.'],
+ ['4. Aorta ascendente','O ventrículo esquerdo manda esse sangue ainda bem oxigenado para <b>coronárias e encéfalo</b>, que saem da parte inicial da aorta.'],
+ ['5. Ducto arterioso','O sangue pouco oxigenado da <b>VCS</b> vai ao átrio direito → ventrículo direito → tronco pulmonar. Como a resistência pulmonar é alta, a maior parte <b>atalha pelo ducto arterioso</b> para a aorta descendente. Só uma pequena parte vai aos pulmões.'],
+ ['6. Aorta descendente','Leva sangue de saturação <b>intermediária</b> (mistura da aorta ascendente com o ducto) para abdome e membros inferiores.'],
+ ['7. Artérias umbilicais','Ramos das <b>ilíacas internas</b>. Levam o sangue <b>pouco oxigenado</b> de volta à placenta, onde é "recarregado".']
+];
+const birth='<b>Ao nascer:</b> o primeiro choro expande os pulmões, a <b>resistência pulmonar cai</b> e chega muito sangue ao átrio esquerdo, cuja pressão passa a ser maior que a do direito → o <b>forame oval fecha</b> (fossa oval). O <b>ducto arterioso</b> contrai (O₂ sobe, prostaglandinas caem) → ligamento arterial. Com o <b>clampeamento do cordão</b>, veia umbilical → <b>ligamento redondo do fígado</b>; ducto venoso → <b>ligamento venoso</b>; parte distal das artérias umbilicais → <b>ligamentos umbilicais mediais</b>. O ventrículo direito passa a mandar todo o sangue aos pulmões.';
+let mode=0,cur=6;
+function draw(){
+ const n=mode==1,k=cur;const op=s=>n?1:(s<=k+1?1:.13);
+ let o=`<defs>${mk(R)}${mk(O)}${mk(B)}${mk('#999999')}</defs>`;
+ const g=(s,html,off)=>`<g opacity="${n&&off?.25:op(s)}">${html}</g>`;
+ // heart
+ o+=`<rect x="290" y="195" width="90" height="80" rx="14" fill="#fadbd8" stroke="#555"/><rect x="420" y="195" width="90" height="80" rx="14" fill="#fadbd8" stroke="#555"/><rect x="290" y="290" width="90" height="90" rx="14" fill="#d6eaf8" stroke="#555"/><rect x="420" y="290" width="90" height="90" rx="14" fill="#fdebd0" stroke="#555"/>`;
+ o+=tx(335,240,'AD')+tx(465,240,'AE')+tx(335,340,'VD')+tx(465,340,'VE');
+ // placenta e pulmao
+ o+=`<rect x="20" y="440" width="150" height="70" rx="12" fill="#e8daef" stroke="#6c3483"/>`+tx(95,480,'PLACENTA',undefined,14,'bold');
+ o+=`<rect x="345" y="428" width="125" height="34" rx="10" fill="${n?'#f5b7b1':'#eaf2f8'}" stroke="#555"/>`+tx(407,450,'pulmões');
+ // 1 veia umbilical
+ o+=g(1,pl('95,440 95,362',R,'a')+tx(105,405,'veia umbilical','start')+tx(60,372,'fígado','end'),1);
+ // 2 ducto venoso -> VCI
+ o+=g(2,pl('95,362 205,362 205,250 288,244',O,'b')+tx(210,380,'ducto venoso','start')+tx(188,310,'VCI','end'),1);
+ o+=g(2,`<rect x="40" y="318" width="110" height="38" rx="8" fill="none" stroke="#999" stroke-dasharray="4 3"/>`,0);
+ // VCS
+ o+=g(5,pl('250,40 250,210 288,210',B,'c')+tx(258,70,'VCS','start'),0);
+ // 3 forame oval
+ o+=g(3,pl('382,235 418,235',O,'d',8)+tx(400,185,'forame oval')+tx(400,200,'(AD → AE)'),1);
+ // AE->VE
+ o+=g(3,pl('465,276 465,288',O,'e',8),0);
+ // 4 aorta ascendente
+ o+=g(4,pl('512,330 548,330 548,128 600,128',R,'f')+tx(556,100,'aorta ascendente','start')+tx(556,116,'(coronárias e cérebro)','start'),0);
+ // AD->VD, VD -> tronco -> ducto arterioso
+ o+=g(5,pl('335,277 335,288',B,'g',8)+pl('335,382 335,410 618,410',B,'h')+tx(480,404,'ducto arterioso')+pl('407,410 407,426',B,'i',4),1);
+ // 6 aorta descendente
+ o+=g(6,pl('620,128 620,488',O,'j')+tx(630,300,'aorta descendente','start'),0);
+ // 7 artérias umbilicais
+ o+=g(7,pl('620,488 172,488',B,'l')+tx(400,510,'artérias umbilicais'),1);
+ if(n){o+=`<rect x="0" y="0" width="800" height="520" fill="none"/>`+tx(400,30,'Após o nascimento: desvios fechando; pulmões assumem a troca de gases',undefined,14,'bold');
+  o+=pl('407,426 407,400',R,'p',5);}
+ document.getElementById('v').innerHTML=o;
+ document.getElementById('info').innerHTML=n?birth:`<b>${steps[k][0]}</b><br>${steps[k][1]}`;
+ [...document.querySelectorAll('#modes button')].forEach((b,i)=>b.setAttribute('aria-pressed',i==mode));
+ [...document.querySelectorAll('#st button')].forEach((b,i)=>b.setAttribute('aria-pressed',i==k&&!n));
+}
+['Vida fetal','Ao nascer'].forEach((t,i)=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{mode=i;draw()};document.getElementById('modes').appendChild(b)});
+steps.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s[0];b.onclick=()=>{mode=0;cur=i;draw()};document.getElementById('st').appendChild(b)});
+draw();
+</script></body></html>
