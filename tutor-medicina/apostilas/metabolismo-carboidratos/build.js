@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path');
+const F=require('./src/figures.js');
+const dir=path.join(__dirname,'src');
+const parts=fs.readdirSync(dir).filter(f=>/^\d\d-.*\.html$/.test(f)).sort();
+let n=0;
+let body=parts.map(f=>fs.readFileSync(path.join(dir,f),'utf8')).join('\n');
+body=body.replace(/\{\{F:(\w+)\|([^}]*)\}\}/g,(m,k,cap)=>{if(!F[k])throw new Error('figura '+k);n++;return `<figure>${F[k]()}<figcaption><b>Figura ${n}.</b> ${cap}</figcaption></figure>`});
+const html=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Apostila de revisão: metabolismo energético e dos carboidratos</title><style>${fs.readFileSync(path.join(dir,'style.css'),'utf8')}</style></head><body>${body}</body></html>`;
+fs.writeFileSync(path.join(__dirname,'out','apostila.html'),html);
+console.log('figuras:',n,'bytes:',html.length);

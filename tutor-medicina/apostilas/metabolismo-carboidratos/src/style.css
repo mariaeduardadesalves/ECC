@@ -1,0 +1,34 @@
+@page{size:A4;margin:16mm 15mm 18mm 15mm}
+*{box-sizing:border-box}
+body{font-family:"Liberation Sans",Arial,Helvetica,sans-serif;font-size:10.4pt;line-height:1.42;color:#1b1b1b;margin:0}
+h1{font-size:19pt;margin:0 0 6px;color:#154360;border-bottom:3px solid #2e86c1;padding-bottom:5px}
+h1.obj{break-before:page}
+h1 .n{display:inline-block;background:#2e86c1;color:#fff;border-radius:6px;padding:1px 9px;margin-right:8px;font-size:15pt}
+h2{font-size:13.2pt;color:#1a5276;margin:16px 0 4px;break-after:avoid}
+h3{font-size:11pt;color:#1b4f72;margin:11px 0 3px;break-after:avoid}
+p{margin:5px 0;text-align:justify}
+ul,ol{margin:4px 0 6px 20px;padding:0} li{margin:2px 0}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:9.4pt;break-inside:avoid}
+th{background:#1a5276;color:#fff;padding:4px 6px;text-align:left}
+td{border:1px solid #c7ced4;padding:4px 6px;vertical-align:top}
+tr:nth-child(even) td{background:#f4f7f9}
+figure{margin:10px 0;break-inside:avoid;text-align:center}
+figure svg{width:100%;height:auto;border:1px solid #d5dbe0;border-radius:6px;background:#fff}
+figcaption{font-size:8.8pt;color:#555;margin-top:3px;font-style:italic;text-align:center}
+.box{border-left:5px solid;border-radius:4px;padding:6px 10px;margin:9px 0;break-inside:avoid;font-size:9.9pt}
+.box b.t{display:block;margin-bottom:2px}
+.fix{background:#eaf4fb;border-color:#2e86c1}
+.clin{background:#fdf2f0;border-color:#c0392b}
+.rac{background:#f2ecf8;border-color:#8e44ad}
+.src{background:#fdf6e3;border-color:#b9770e}
+.trap{background:#fff5e0;border-color:#e67e22}
+.qa{background:#f1f8f2;border-color:#27ae60}
+.cover{height:255mm;display:flex;flex-direction:column;justify-content:center;text-align:center;break-after:page}
+.cover h1{font-size:30pt;border:none;color:#154360;margin:8px 0}
+.cover .sub{font-size:14pt;color:#2e86c1}
+.cover .meta{margin-top:28px;color:#555;font-size:10pt}
+.cover .band{height:10px;background:linear-gradient(90deg,#2e86c1,#16a085,#d4ac0d,#c0392b,#8e44ad);border-radius:5px;margin:22px 0}
+.toc td:first-child{width:62px;font-weight:bold}
+small,.mut{color:#555}
+.dag{font-size:8.6pt;color:#8a5a00;font-weight:bold}
+.pb{break-before:page}
